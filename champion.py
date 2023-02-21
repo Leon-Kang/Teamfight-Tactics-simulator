@@ -281,9 +281,10 @@ class champion:
                     origin_class.divine(self, target, False)  # divine -trait
 
                 # sharpshooter -trait
-                if (not trait_damage and not item_damage and not burn_damage): origin_class.sharpshooter(self, target,
-                                                                                                         dmg, true_dmg,
-                                                                                                         True)
+                if not trait_damage and not item_damage and not burn_damage:
+                    origin_class.sharpshooter(self, target,
+                                              dmg, true_dmg,
+                                              True)
         else:
             items.trap_claw(self, target)  # trap_claw
 
