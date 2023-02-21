@@ -124,6 +124,7 @@ items = [
     'zzrot_portal'
 ]
 
+console.log('item count: ' + items.length, + '  |  ' + 'hero count: ' + champions.length);
 
 let body = document.getElementsByTagName('body')[0]
 
@@ -131,7 +132,7 @@ let body = document.getElementsByTagName('body')[0]
             let line = document.createElement('div')
             line.classList.add('line')
             for(let j = 0; j < 7; j++){
-                
+
                 let hex = document.createElement('div')
                 hex.style.float ="left"
 
@@ -139,7 +140,7 @@ let body = document.getElementsByTagName('body')[0]
                 x = j.toString()
                 y = y.toString()
                 hex.id = y+x
-                
+
                 hex.classList.add('hex')
                 hex.style.height = "100px"
                 hex.style.width = "100px"
@@ -166,10 +167,6 @@ let body = document.getElementsByTagName('body')[0]
                 }
                 hex.append(select)
 
-
-
-
-
                 //stars
                 select = document.createElement('select')
                 select.classList.add('stars')
@@ -179,10 +176,10 @@ let body = document.getElementsByTagName('body')[0]
                     option.value = c + 1
                     option.innerHTML = c + 1
                     select.append(option)
-                    
+
                 }
                 hex.append(select)
-                
+
 
 
                 //item0
@@ -241,32 +238,13 @@ let body = document.getElementsByTagName('body')[0]
                     select.append(option)
                 }
                 hex.append(select)
-                
-
-                daddy = document.createElement('input')
-                daddy.placeholder = 'azir'
-                daddy.classList.add('daddy_coordinates')
-                daddy.style.width = "40px"
-                hex.append(daddy)
-
-                chosen = document.createElement('input')
-                chosen.placeholder = 'chosen'
-                chosen.classList.add('chosen')
-                chosen.style.width = "43px"
-                hex.append(chosen)
-
 
                 line.append(hex)
-
-                
-
-
-
 
 
                 if(i % 2 == 1 && j == 0){
                     hex.style.marginLeft = "50px"
-                } 
+                }
             }
                 line.style.float ="left"
 
@@ -318,34 +296,37 @@ let body = document.getElementsByTagName('body')[0]
         
 
         button.addEventListener('click', () => {
-            json = {}
+            let json = {}
             json['blue'] = []
             json['red'] = []
 
-            for(let i = 0; i < 11; i++){
+            let hex_object;
+            let line;
+            for (let i = 0; i < 11; i++) {
                 line = body.children[i]
-                if(line.classList.contains('line')){
-                    for(let j = 0; j < 7; j++){
+                if (line.classList.contains('line')) {
+                    for (let j = 0; j < 7; j++) {
                         let hex = line.children[j]
                         hex_object = {}
-                        if(hex.children[0].value){
+                        if (hex.children[0].value) {
                             hex_object['name'] = hex.children[0].value
                             hex_object['stars'] = hex.children[1].value
                             hex_object['items'] = []
-                            if(hex.children[2].value.length > 1){hex_object['items'].push(hex.children[2].value)}
-                            if(hex.children[3].value.length > 1){hex_object['items'].push(hex.children[3].value)}
-                            if(hex.children[4].value.length > 1){hex_object['items'].push(hex.children[4].value)}
-                            hex_object["overlord_coordinates"] = false
-                            if(hex.children[5].value.length > 1) {
-                                hex_object['overlord_coordinates'] = [hex.children[5].value.split(" ")[0], hex.children[5].value.split(" ")[1]]
+                            if (hex.children[2].value.length > 1) {
+                                hex_object['items'].push(hex.children[2].value)
                             }
-                            hex_object["chosen"] = false
-                            if(hex.children[6].value.length > 1) {hex_object['chosen'] = hex.children[6].value}
+                            if (hex.children[3].value.length > 1) {
+                                hex_object['items'].push(hex.children[3].value)
+                            }
+                            if (hex.children[4].value.length > 1) {
+                                hex_object['items'].push(hex.children[4].value)
+                            }
+
                             hex_object["y"] = hex.id[0]
                             hex_object["x"] = hex.id[1]
 
-                            if(hex.id[0] < 4) json['blue'].push(hex_object)
-                            if(hex.id[0] >= 4) json['red'].push(hex_object)
+                            if (hex.id[0] < 4) json['blue'].push(hex_object)
+                            if (hex.id[0] >= 4) json['red'].push(hex_object)
                         }
 
                     }

@@ -16,9 +16,12 @@ import champion_functions
 
 que = []
 log = []
+
+
 def printt(msg):
     if(config.PRINTMESSAGES): log.append(msg)
     #if(config.PRINTMESSAGES): print(msg)
+
 
 test_multiple = {'blue': 0, 'red': 0, 'bugged out': 0, 'draw': 0}
 
