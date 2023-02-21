@@ -53,7 +53,7 @@ def chosen(champion, value):
 
 def total_health(blue, red):
     global total_health_teams
-    for b in blue:total_health_teams['blue'] += b.health
+    for b in blue: total_health_teams['blue'] += b.health
     for r in red: total_health_teams['red'] += r.health
 
 def get_origin_class_tier(team, trait):
@@ -245,7 +245,6 @@ def elderwood(blue_team, red_team):
             elderwood_list[t] += 1
 
 
-
 def enlightened(blue_team, red_team):
     teams = {'blue': blue_team, 'red': red_team}
 
@@ -255,7 +254,6 @@ def enlightened(blue_team, red_team):
             for c in teams[t]:
                 if(is_trait(c, 'enlightened')):
                     items.change_stat(c, 'mana_generation', origin_class_stats.mana_generation['enlightened'][tier], 'enlightened')
-
 
 
 def exile(blue_team, red_team):
@@ -284,8 +282,6 @@ def exile(blue_team, red_team):
                         lifesteal = origin_class_stats.lifesteal['exile'][tier]
                         if(lifesteal):
                             items.change_stat(c, 'lifesteal', lifesteal, 'exile')
-                        
-
 
 
 def ninja(blue_team, red_team):
@@ -302,6 +298,8 @@ def ninja(blue_team, red_team):
 
 
 spirit_list = [] #champion, champion, champion (the ones who have casted)
+
+
 def spirit(champion):
     tier = get_origin_class_tier(champion.team, 'spirit')
     if(tier > 0 and champion not in spirit_list):
@@ -310,7 +308,6 @@ def spirit(champion):
         for o in own_team:
             items.change_stat(o, 'AS', o.AS * (champion.maxmana * multiplier / 100 + 1))
         spirit_list.append(champion)
-
 
 
 def the_boss(champion):
@@ -380,7 +377,6 @@ def the_boss_helper(champion, data):
         champion.add_que('execute_function', origin_class_stats.length['the_boss'], [the_boss_helper, {}])
 
 
-
 def warlord(blue_team, red_team):
     teams = {'blue': blue_team, 'red': red_team}
 
@@ -402,7 +398,6 @@ def warlord(blue_team, red_team):
                     items.change_stat(c, 'SP', c.SP + SP_add, 'warlord')
 
 
-
 def adept(blue_team, red_team):
     teams = {'blue': blue_team, 'red': red_team}
 
@@ -414,7 +409,6 @@ def adept(blue_team, red_team):
                 items.change_stat(e, 'AS', e.AS * origin_class_stats.AS['adept'], 'adept')
                 e.add_que('change_stat', origin_class_stats.length['adept'][tier], None, 'AS', None, {'ezreal': origin_class_stats.AS['adept']})
             
-
 
 def assassin(blue_team, red_team):
     teams = {'blue': blue_team, 'red': red_team}
@@ -435,7 +429,6 @@ def assassin(blue_team, red_team):
                 c.add_que('execute_function', config.LEAP_DELAY, [field.leap_to_back_line, {'trait': '  assassin'}])
 
 
-
 def brawler(blue_team, red_team):
     teams = {'blue': blue_team, 'red': red_team}
 
@@ -447,7 +440,6 @@ def brawler(blue_team, red_team):
 
                     items.change_stat(c, 'max_health', c.max_health + origin_class_stats.health['brawler'][tier], 'brawler')
                     items.change_stat(c, 'health', c.health + origin_class_stats.health['brawler'][tier], 'brawler')
-
 
 
 def dazzler(champion, target):

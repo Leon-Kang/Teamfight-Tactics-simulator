@@ -1,3 +1,5 @@
+import datetime
+
 import champion
 from champion_functions import MILLIS
 
@@ -68,11 +70,15 @@ def run():
             draw_results.insert(0, 'draws: ' + str(champion.test_multiple['draw']))
             master.update()
 
-            with open('log.txt', "w") as out:
-                if (MILLIS() < 75000):
-                    if (champion.log[-1] == 'BLUE TEAM WON'): champion.test_multiple['blue'] += 1
-                    if (champion.log[-1] == 'RED TEAM WON'): champion.test_multiple['red'] += 1
-                elif (MILLIS() < 200000):
+            filename = datetime.datetime.now().strftime("%H:%M:%S")
+
+            with open(filename + '.log', "w") as out:
+                if MILLIS() < 75000:
+                    if champion.log[-1] == 'BLUE TEAM WON':
+                        champion.test_multiple['blue'] += 1
+                    if champion.log[-1] == 'RED TEAM WON':
+                        champion.test_multiple['red'] += 1
+                elif MILLIS() < 200000:
                     champion.test_multiple['draw'] += 1
                 for line in champion.log:
                     out.write(str(line))
