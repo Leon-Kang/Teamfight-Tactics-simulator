@@ -1,9 +1,12 @@
+import datetime
+
 import champion
 from champion_functions import MILLIS
 
 import multiprocessing
 
 import tkinter as tk
+
 master = tk.Tk()
 tk.Label(master, text="Team data").grid(row=0)
 tk.Label(master, text="Iterations").grid(row=1)
@@ -26,35 +29,37 @@ bugged_out_results.grid(row=2, column=3)
 draw_results.grid(row=2, column=4)
 status.grid(row=3, column=1)
 
-#team_data = team_json.get()
-#iterations_data = iterations.get()
+
+# team_data = team_json.get()
+# iterations_data = iterations.get()
+
 
 def set_status(val):
     status.delete(0, tk.END)
     status.insert(0, val)
+
+
 set_status('idle')
 
-def run():
 
-    #global test_multiple
+def run():
+    # global test_multiple
     set_status('running')
 
     team_data = team_json.get()
     iterations_data = int(iterations.get())
 
     jobs = []
-    
-    if(team_data):
+
+    if team_data:
         for i in range(1, iterations_data + 2):
-            if(status.get() == 'idle'): break
-            
+            if status.get() == 'idle':
+                break
+
             try:
                 champion.run(champion.champion, team_data)
             except:
                 champion.test_multiple['bugged out'] += 1
-           
-
-
 
             blue_results.delete(0, tk.END)
             blue_results.insert(0, 'blue: ' + str(champion.test_multiple['blue']))
@@ -66,33 +71,35 @@ def run():
             draw_results.insert(0, 'draws: ' + str(champion.test_multiple['draw']))
             master.update()
 
-            with open('log.txt', "w") as out:
-                if(MILLIS() < 75000):
-                    if(champion.log[-1] == 'BLUE TEAM WON'): champion.test_multiple['blue'] += 1
-                    if(champion.log[-1] == 'RED TEAM WON'): champion.test_multiple['red'] += 1
-                elif(MILLIS() < 200000): champion.test_multiple['draw'] += 1
+            filename = datetime.datetime.now().strftime("%H:%M:%S")
+
+            with open(filename + '.log', "w") as out:
+                if MILLIS() < 75000:
+                    if champion.log[-1] == 'BLUE TEAM WON':
+                        champion.test_multiple['blue'] += 1
+                    if champion.log[-1] == 'RED TEAM WON':
+                        champion.test_multiple['red'] += 1
+                elif MILLIS() < 200000:
+                    champion.test_multiple['draw'] += 1
                 for line in champion.log:
                     out.write(str(line))
                     out.write('\n')
             out.close()
 
-
     champion.test_multiple = {'blue': 0, 'red': 0, 'bugged out': 0, 'draw': 0}
     set_status('idle')
     master.update()
 
+    # set_stop(False)
 
 
-    #set_stop(False)
-    
-
-start_simulations = tk.Button(master, text='Run simulations', command= lambda: run())   
+start_simulations = tk.Button(master, text='Run simulations', command=lambda: run())
 start_simulations.grid(row=4, column=1, sticky=tk.W, pady=4)
 
-stop_simulations = tk.Button(master, text='Stop', command= lambda:  set_status('idle'))
+stop_simulations = tk.Button(master, text='Stop', command=lambda: set_status('idle'))
 stop_simulations.grid(row=4, column=2, sticky=tk.W, pady=4)
 
-quit_simulations = tk.Button(master, text='Quit', command= lambda:  master.quit())
+quit_simulations = tk.Button(master, text='Quit', command=lambda: master.quit())
 quit_simulations.grid(row=4, column=3, sticky=tk.W, pady=4)
 
 tk.mainloop()
