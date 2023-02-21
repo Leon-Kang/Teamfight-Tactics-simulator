@@ -464,8 +464,8 @@ def run(champion, team_data):
                      c['chosen']))
     for c in data['red']:
         daddy_coordinates = False
-        if (c['name'] == 'sandguard'): daddy_coordinates = [int(c["overlord_coordinates"][0]),
-                                                            int(c["overlord_coordinates"][1])]
+        if c['name'] == 'sandguard': daddy_coordinates = [int(c["overlord_coordinates"][0]),
+                                                          int(c["overlord_coordinates"][1])]
         red.append(
             champion(c['name'], int(c['stars']), 'red', int(c['y']), int(c['x']), c['items'], False, daddy_coordinates,
                      c['chosen']))
@@ -502,7 +502,6 @@ def run(champion, team_data):
             field.action(o)
 
         while len(que) > 0 and MILLIS() > que[0][2]:
-
             champion = que[0][1]
             data = que[0][6]
             # make sure that teemo's poison darts deal damage even after teemo himself has died                      #morgana deals if the ult is running and she dies                                                       #if ahri dies, she will still ult. range reduced in the executed function
@@ -605,14 +604,15 @@ def change_stat(champion, action, length, function, stat, value, data):
         champion.AD += AD_change
         champion.print(' {} {} --> {}'.format('AD', round(start_value, 2), round(champion.AD, 2)))
 
-
     else:
-        if (not ('quicksilver' in champion.items and MILLIS() <= item_stats.item_change_length[
-            'quicksilver'] and value == True and (stat == 'stunned' or stat == 'disarmed' or stat == 'blinded'))):
+        if not ('quicksilver' in champion.items and MILLIS() <= item_stats.item_change_length[
+            'quicksilver'] and value == True and
+                (stat == 'stunned' or stat == 'disarmed' or stat == 'blinded')):
             if not ('rapid_firecannon' in champion.items and value == True and stat == 'blinded'):
                 if (not (champion.name == 'galio' and (
                         MILLIS() - origin_class.galio_spawn_time[champion.team] <= origin_class_stats.cc_immune[
-                    'cultist']) and (stat == 'stunned' or stat == 'disarmed' or stat == 'blinded'))):
+                    'cultist']) and
+                         (stat == 'stunned' or stat == 'disarmed' or stat == 'blinded'))):
                     end_value = value
                     start_value = getattr(champion, stat)
                     if 'ezreal' in data:
@@ -630,8 +630,8 @@ def change_stat(champion, action, length, function, stat, value, data):
                         start_value = [[champion.will_revive[0][0].name], [champion.will_revive[1][0]]]
 
                     if end_value != start_value:
-                        if (isinstance(start_value, float)): start_value = round(start_value, 3)
-                        if (isinstance(end_value, float)): end_value = round(end_value, 3)
+                        if isinstance(start_value, float): start_value = round(start_value, 3)
+                        if isinstance(end_value, float): end_value = round(end_value, 3)
                         champion.print(' {} {} --> {}'.format(stat, start_value, end_value))
                     setattr(champion, stat, end_value)
             else:
