@@ -485,11 +485,11 @@ def run(champion, team_data):
                             0])  # infinity_edge      made sure that the crit damage bonus gets regisred after everything else has gone through
     while True:
 
-        if (MILLIS() > 200000):
+        if MILLIS() > 200000:
             test_multiple['bugged out'] += 1
             break
-        if (MILLIS() > 0 and MILLIS() % origin_class_stats.length['elderwood'] == 0): origin_class.elderwood(blue,
-                                                                                                             red)  # elderwood -trait
+        if MILLIS() > 0 and MILLIS() % origin_class_stats.length['elderwood'] == 0: origin_class.elderwood(blue,
+                                                                                                           red)  # elderwood -trait
         if (MILLIS() > 0 and MILLIS() % origin_class_stats.threshold['hunter'][
             origin_class.get_origin_class_tier('blue', 'hunter')] == 0): origin_class.hunter(blue)  # hunter -trait
         if (MILLIS() > 0 and MILLIS() % origin_class_stats.threshold['hunter'][
@@ -500,7 +500,7 @@ def run(champion, team_data):
         for o in red:
             field.action(o)
 
-        while (len(que) > 0 and MILLIS() > que[0][2]):
+        while len(que) > 0 and MILLIS() > que[0][2]:
 
             champion = que[0][1]
             data = que[0][6]
@@ -510,51 +510,51 @@ def run(champion, team_data):
                     champion.name == 'morgana' and champion.health <= 0 and que[0][3] and 'coordinates' in que[0][3][
                 1]) or (champion.name == 'ahri' and champion.health <= 0 and que[0][3] and 'y' in que[0][3][1])):
 
-                if (que[0][0] == 'clear_idle'):
+                if que[0][0] == 'clear_idle':
                     champion.idle = True
                     champion.print(' cleared idle     ')
 
-                if (que[0][0] == 'change_stat'):
+                if que[0][0] == 'change_stat':
                     change_stat(champion, que[0][0], 0, que[0][3], que[0][4], que[0][5], data)
 
-                if (que[0][0] == 'heal'):
+                if que[0][0] == 'heal':
                     start_value = round(champion.health, 2)
                     champion.health += (que[0][5] * champion.healing_strength)
-                    if (champion.health > champion.max_health):
+                    if champion.health > champion.max_health:
                         champion.health = champion.max_health
                     champion.print(' {} {} --> {}'.format('health', start_value, round(champion.health, 2)))
 
-                if (que[0][0] == 'shield'):
+                if que[0][0] == 'shield':
                     shield(champion, que[0][0], 0, que[0][3], que[0][4], que[0][5], data)
 
-                if (que[0][0] == 'change_target'):
+                if que[0][0] == 'change_target':
                     old_target = champion.target
                     new_target = que[0][5]
-                    if (new_target and new_target.health > 0):
+                    if new_target and new_target.health > 0:
                         champion.target = new_target
                         champion.target_y = new_target.y
                         champion.target_x = new_target.x
-                        if (champion.target != old_target):
+                        if champion.target != old_target:
                             champion.print(
                                 ' has a new target: ' + '{:<8}'.format(champion.target.team) + '{:<8}'.format(
                                     champion.target.name) + '  [{}, {}]'.format(champion.target.y, champion.target.x))
                     else:
                         field.find_target(champion)
 
-                if (que[0][0] == 'execute_function'):
+                if que[0][0] == 'execute_function':
                     (que[0][3][0])(champion, que[0][3][1])
 
-                if (que[0][0] == 'burn'):
+                if que[0][0] == 'burn':
                     champion.spell(que[0][5], 0, que[0][5].max_health * config.BURN_DMG_PER_SLICE, True, True)
 
-                if (que[0][0] == 'kill'):
+                if que[0][0] == 'kill':
                     que[0][5].die()
 
             que.pop(0)
 
         MILLISECONDS_INCREASE()
-        if (len(blue) == 0 or len(red) == 0):
-            if (len(blue) == 0):
+        if len(blue) == 0 or len(red) == 0:
+            if len(blue) == 0:
                 printt('RED TEAM WON')
             else:
                 printt('BLUE TEAM WON')
@@ -564,40 +564,40 @@ def run(champion, team_data):
 
 def shield(champion, action, length, function, stat, value, data):
     shield_before = champion.shield_amount()
-    if ('shield_before' in data and data['shield_before']):
+    if 'shield_before' in data and data['shield_before']:
         shield_before = data['shield_before']
 
     action_happened = False
-    if (data['increase']):
+    if data['increase']:
 
         # mainly for riven to refresh her shield (remove the old one if still applier and give a new one)
-        if ('expires' not in data):
+        if 'expires' not in data:
             for s in champion.shields:
-                if (s['original_amount'] == value['original_amount'] and s['applier'] == value['applier']):
+                if s['original_amount'] == value['original_amount'] and s['applier'] == value['applier']:
                     champion.shields.remove(s)
 
         champion.shields.insert(0, value)
         action_happened = True
-        if ('expires' in data and data['expires']):
+        if 'expires' in data and data['expires']:
             champion.add_que('shield', data['expires'], None, None, None,
                              {'increase': False, 'identifier': value['identifier']})
     else:
         for s in champion.shields:
-            if (s['identifier'] == data['identifier']):
+            if s['identifier'] == data['identifier']:
                 action_happened = True
                 champion.shields.remove(s)
                 break
-    if (action_happened):
+    if action_happened:
         champion.print(' {} {} --> {}'.format('shield', round(shield_before, 2), round(champion.shield_amount(), 2)))
 
 
 def change_stat(champion, action, length, function, stat, value, data):
     # jhin AD goes up (and down) by every percentage of AS change
-    if (stat == 'AS' and champion.name == 'jhin'):
+    if stat == 'AS' and champion.name == 'jhin':
         AD_change = None
-        if (value):
+        if value:
             AD_change = (value / champion.AS * 100 - 100) * 0.8
-        if ('ezreal' in data):
+        if 'ezreal' in data:
             AD_change = (data['ezreal'] * 100 - 100) * -0.8
 
         start_value = champion.AD
@@ -608,27 +608,27 @@ def change_stat(champion, action, length, function, stat, value, data):
     else:
         if (not ('quicksilver' in champion.items and MILLIS() <= item_stats.item_change_length[
             'quicksilver'] and value == True and (stat == 'stunned' or stat == 'disarmed' or stat == 'blinded'))):
-            if (not ('rapid_firecannon' in champion.items and value == True and stat == 'blinded')):
+            if not ('rapid_firecannon' in champion.items and value == True and stat == 'blinded'):
                 if (not (champion.name == 'galio' and (
                         MILLIS() - origin_class.galio_spawn_time[champion.team] <= origin_class_stats.cc_immune[
                     'cultist']) and (stat == 'stunned' or stat == 'disarmed' or stat == 'blinded'))):
                     end_value = value
                     start_value = getattr(champion, stat)
-                    if ('ezreal' in data):
+                    if 'ezreal' in data:
                         end_value = champion.AS / data['ezreal']
-                    if ('morgana' in data):
+                    if 'morgana' in data:
                         end_value = champion.MR / data['morgana']
-                    if ('vi' in data):
+                    if 'vi' in data:
                         end_value = champion.armor / data['vi']
-                    if ('ashe' in data):
+                    if 'ashe' in data:
                         end_value = champion.AD / data['ashe']
-                    if ('garen' in data):
+                    if 'garen' in data:
                         end_value = champion.spell_damage_reduction_percentage / data['garen']
 
-                    if (stat == 'will_revive' and champion.will_revive[0][0]):
+                    if stat == 'will_revive' and champion.will_revive[0][0]:
                         start_value = [[champion.will_revive[0][0].name], [champion.will_revive[1][0]]]
 
-                    if (end_value != start_value):
+                    if end_value != start_value:
                         if (isinstance(start_value, float)): start_value = round(start_value, 3)
                         if (isinstance(end_value, float)): end_value = round(end_value, 3)
                         champion.print(' {} {} --> {}'.format(stat, start_value, end_value))

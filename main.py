@@ -53,7 +53,8 @@ def run():
 
     if team_data:
         for i in range(1, iterations_data + 2):
-            if status.get() == 'idle': break
+            if status.get() == 'idle':
+                break
 
             try:
                 champion.run(champion.champion, team_data)
