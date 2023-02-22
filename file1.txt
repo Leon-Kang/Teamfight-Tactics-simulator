@@ -1,0 +1,286 @@
+blue    kayn            champion True --> False   shade                                                                 0
+blue    kayn            stunned False --> True   shade                                                                  0
+blue    nami            has a new target: red     aphelios  [5, 4]                                                      0
+blue    ashe            has a new target: red     aphelios  [5, 4]                                                      0
+blue    kindred         has a new target: red     aphelios  [5, 4]                                                      0
+blue    aphelios        has a new target: red     aphelios  [5, 4]                                                      0
+red     azir            has a new target: blue    nami      [3, 4]                                                      0
+red     ashe            has a new target: blue    nami      [3, 4]                                                      0
+red     kindred         has a new target: blue    nami      [3, 4]                                                      0
+red     aphelios        has a new target: blue    nami      [3, 4]                                                      0
+red     ezreal          has a new target: blue    nami      [3, 4]                                                      0
+blue    nami            attacks red      aphelios     500  --> 450        shield 0    --> 0      crit                   1
+red     aphelios        mana 50 --> 53.0                                                                                1
+blue    nami            mana 60 --> 70                                                                                  1
+blue    ashe            attacks red      aphelios     450  --> 384        shield 0    --> 0                             1
+red     aphelios        mana 53.0 --> 57.0                                                                              1
+blue    ashe            mana 0 --> 10                                                                                   1
+blue    kindred         attacks red      aphelios     384  --> 325        shield 0    --> 0                             1
+red     aphelios        mana 57.0 --> 60.5                                                                              1
+blue    kindred         mana 0 --> 10                                                                                   1
+blue    aphelios        attacks red      aphelios     325  --> 284        shield 0    --> 0                             1
+red     aphelios        mana 60.5 --> 63.0                                                                              1
+blue    aphelios        mana 50 --> 60                                                                                  1
+red     azir            attacks blue     nami         550  --> 492        shield 0    --> 0                             1
+blue    nami            mana 70 --> 73.5                                                                                1
+red     azir            mana 75 --> 85                                                                                  1
+red     ashe            attacks blue     nami         492  --> 425        shield 0    --> 0                             1
+blue    nami            mana 73.5 --> 77.5                                                                              1
+red     ashe            mana 0 --> 10                                                                                   1
+red     kindred         attacks blue     nami         425  --> 367        shield 0    --> 0                             1
+blue    nami            mana 77.5 --> 81.0                                                                              1
+red     kindred         mana 0 --> 10                                                                                   1
+red     aphelios        attacks blue     nami         367  --> 325        shield 0    --> 0                             1
+blue    nami            mana 81.0 --> 83.5                                                                              1
+red     aphelios        mana 63.0 --> 73.0                                                                              1
+red     ezreal          attacks blue     nami         325  --> 259        shield 0    --> 0                             1
+blue    nami            mana 83.5 --> 87.5                                                                              1
+red     ezreal          mana 90 --> 100                                                                                 1
+blue    kayn            leaps                                                                                           396
+blue    kayn            moves from (2 , 2)   to   (7 , 1)                                                               396
+blue    kayn            idle False --> True   shade                                                                     396
+blue    kayn            champion False --> True   shade                                                                 396
+blue    kayn            stunned True --> False   shade                                                                  396
+blue    kayn            has a new target: red     azir      [7, 2]                                                      397
+blue    kayn            attacks red      azir         950  --> 858        shield 0    --> 0      crit                   397
+red     azir            mana 85 --> 90.5                                                                                397
+blue    kayn            mana 0 --> 10                                                                                   397
+red     ezreal         cleared idle                                                                                     1113
+red     ezreal          attacks blue     nami         259  --> 192        shield 0    --> 0                             1114
+blue    nami            mana 87.5 --> 91.5                                                                              1114
+red     ezreal          mana 100 --> 110                                                                                1114
+red     azir           cleared idle                                                                                     1178
+red     azir            attacks blue     nami         192  --> 105        shield 0    --> 0      crit                   1179
+blue    nami            mana 91.5 --> 96.8                                                                              1179
+red     azir            mana 90.5 --> 100.5                                                                             1179
+blue    kindred        cleared idle                                                                                     1252
+red     kindred        cleared idle                                                                                     1252
+blue    kindred         attacks red      aphelios     284  --> 225        shield 0    --> 0                             1253
+red     aphelios        mana 73.0 --> 76.5                                                                              1253
+blue    kindred         mana 10 --> 20                                                                                  1253
+red     kindred         attacks blue     nami         105  --> 46         shield 0    --> 0                             1253
+blue    nami            mana 96.8 --> 100.2                                                                             1253
+red     kindred         mana 10 --> 20                                                                                  1253
+blue    ashe           cleared idle                                                                                     1335
+blue    aphelios       cleared idle                                                                                     1335
+red     ashe           cleared idle                                                                                     1335
+red     aphelios       cleared idle                                                                                     1335
+blue    ashe            attacks red      aphelios     225  --> 159        shield 0    --> 0                             1336
+red     aphelios        mana 76.5 --> 80.5                                                                              1336
+blue    ashe            mana 10 --> 20                                                                                  1336
+blue    aphelios        attacks red      aphelios     159  --> 96         shield 0    --> 0      crit                   1336
+red     aphelios        mana 80.5 --> 84.2                                                                              1336
+blue    aphelios        mana 60 --> 70                                                                                  1336
+red     ashe            attacks blue     nami         46   --> -20        shield 0    --> 0                             1336
+blue    nami            mana 100.2 --> 104.2                                                                            1336
+blue    nami            dies                                                                                            1336
+red     ashe            mana 10 --> 20                                                                                  1336
+red     ashe            has a new target: blue    kayn      [7, 1]                                                      1336
+red     aphelios        has a new target: blue    kindred   [2, 4]                                                      1336
+red     aphelios        ability triggered                                                                               1336
+red     aphelios_turret has a new target: blue    ashe      [2, 1]                                                      1336
+red     aphelios_turret attacks blue     ashe         600  --> 559        shield 0    --> 0                             1336
+blue    ashe            mana 20 --> 22.5                                                                                1336
+blue: 4/red: 6
+red     aphelios        attacks blue     kindred      650  --> 609        shield 0    --> 0                             1337
+blue    kindred         mana 20 --> 22.5                                                                                1337
+blue    kayn           cleared idle                                                                                     1398
+blue    kayn            attacks red      azir         858  --> 797        shield 0    --> 0                             1399
+red     azir            mana 100.5 --> 104.2                                                                            1399
+blue    kayn            mana 10 --> 20                                                                                  1399
+red     ezreal         cleared idle                                                                                     2226
+red     ezreal          has a new target: blue    kindred   [2, 4]                                                      2227
+red     ezreal          attacks blue     kindred      609  --> 509        shield 0    --> 0      crit                   2227
+blue    kindred         mana 22.5 --> 28.5                                                                              2227
+red     ezreal          mana 110 --> 120                                                                                2227
+red     azir           cleared idle                                                                                     2356
+red     azir            has a new target: blue    kayn      [7, 1]                                                      2357
+red     azir            attacks blue     kayn         900  --> 825        shield 0    --> 0      crit                   2357
+blue    kayn            mana 20 --> 24.5                                                                                2357
+red     azir            mana 104.2 --> 114.2                                                                            2357
+blue    kayn           cleared idle                                                                                     2400
+blue    kayn            attacks red      azir         797  --> 735        shield 0    --> 0                             2401
+red     azir            mana 114.2 --> 117.9                                                                            2401
+blue    kayn            mana 24.5 --> 34.5                                                                              2401
+blue    kindred        cleared idle                                                                                     2504
+red     kindred        cleared idle                                                                                     2504
+blue    kindred         attacks red      aphelios     96   --> 38         shield 0    --> 0                             2505
+red     aphelios        mana 0 --> 3.5                                                                                  2505
+blue    kindred         mana 28.5 --> 38.5                                                                              2505
+red     kindred         has a new target: blue    kayn      [7, 1]                                                      2505
+red     kindred         attacks blue     kayn         825  --> 750        shield 0    --> 0      crit                   2505
+blue    kayn            mana 34.5 --> 39.0                                                                              2505
+red     kindred         mana 20 --> 30                                                                                  2505
+blue    kindred         ability triggered                                                                               2506
+blue    kindred         deals red      aphelios     38   --> -337     shield 0    --> 0                                 2506
+red     aphelios        mana 3.5 --> 26.0                                                                               2506
+red     aphelios        dies                                                                                            2506
+red     aphelios        aphelios_turret dies                                                                            2506
+red     aphelios        healing_strength 1 --> 0.5                                                                      2506
+blue    kindred         moves from (2 , 4)   to   (3 , 2)                                                               2506
+blue: 4/red: 4
+blue    ashe           cleared idle                                                                                     2670
+blue    aphelios       cleared idle                                                                                     2670
+red     ashe           cleared idle                                                                                     2670
+blue    ashe            has a new target: red     ashe      [6, 2]                                                      2671
+blue    ashe            attacks red      ashe         600  --> 500        shield 0    --> 0      crit                   2671
+red     ashe            mana 20 --> 26.0                                                                                2671
+blue    ashe            mana 22.5 --> 32.5                                                                              2671
+blue    aphelios        has a new target: red     ezreal    [5, 5]                                                      2671
+blue    aphelios        attacks red      ezreal       750  --> 709        shield 0    --> 0                             2671
+red     ezreal          mana 120 --> 122.5                                                                              2671
+blue    aphelios        mana 70 --> 80                                                                                  2671
+red     ashe            attacks blue     kayn         750  --> 693        shield 0    --> 0                             2671
+blue    kayn            mana 39.0 --> 42.4                                                                              2671
+red     ashe            mana 26.0 --> 36.0                                                                              2671
+blue    aphelios        ability triggered                                                                               2672
+blue    aphelios_turret has a new target: red     ezreal    [5, 5]                                                      2672
+blue    aphelios_turret attacks red      ezreal       709  --> 667        shield 0    --> 0                             2672
+red     ezreal          mana 122.5 --> 125.0                                                                            2672
+blue: 5/red: 4
+blue    ashe            attacks red      ashe         500  --> 400        shield 0    --> 0      hunter                 3000
+red     ashe            mana 36.0 --> 42.0                                                                              3000
+blue    kayn            attacks red      ashe         400  --> 300        shield 0    --> 0      hunter                 3000
+red     ashe            mana 42.0 --> 48.0                                                                              3000
+blue    kindred         has a new target: red     ashe      [6, 2]                                                      3000
+blue    kindred         attacks red      ashe         300  --> 213        shield 0    --> 0      hunter                 3000
+red     ashe            mana 48.0 --> 53.2                                                                              3000
+blue    aphelios        attacks red      ashe         213  --> 150        shield 0    --> 0      hunter                 3000
+red     ashe            mana 53.2 --> 57.0                                                                              3000
+blue    aphelios_turret attacks red      ashe         150  --> 88         shield 0    --> 0      hunter                 3000
+red     ashe            mana 57.0 --> 60.8                                                                              3000
+red     azir            attacks blue     aphelios_turret1    --> -104       shield 0    --> 0      hunter               3000
+blue    aphelios_turret dies                                                                                            3000
+red     ashe            attacks blue     aphelios     500  --> 400        shield 0    --> 0      hunter                 3000
+red     kindred         attacks blue     aphelios     400  --> 313        shield 0    --> 0      hunter                 3000
+red     ezreal          attacks blue     aphelios     313  --> 213        shield 0    --> 0      hunter                 3000
+blue: 4/red: 4
+red     ezreal         cleared idle                                                                                     3339
+red     ezreal          attacks blue     kindred      509  --> 442        shield 0    --> 0                             3340
+red     ezreal          mana 125.0 --> 135.0                                                                            3340
+blue    kayn           cleared idle                                                                                     3402
+blue    kayn            attacks red      azir         735  --> 643        shield 0    --> 0      crit                   3403
+red     azir            mana 117.9 --> 123.5                                                                            3403
+blue    kayn            mana 42.4 --> 52.4                                                                              3403
+blue    kayn            ability triggered                                                                               3404
+blue    kayn            moves from (7 , 1)   to   (7 , 3)                                                               3404
+blue    kayn            deals red      ashe         88   --> -245     shield 0    --> 0                                 3404
+red     ashe            mana 60.8 --> 80.8                                                                              3404
+red     ashe            dies                                                                                            3404
+red     ashe            mana 80.8 --> 70.8                                                                              3404
+red     ashe            mana_cost_increased False --> True                                                              3404
+blue    kayn            deals red      kindred      650  --> 317      shield 0    --> 0                                 3404
+red     kindred         mana 30 --> 50.0                                                                                3404
+red     kindred         mana 50.0 --> 38.5                                                                              3404
+red     kindred         mana_cost_increased False --> True                                                              3404
+blue    kayn            deals red      azir         643  --> 309      shield 0    --> 0                                 3404
+red     azir            mana 123.5 --> 143.5                                                                            3404
+red     azir            mana 143.5 --> 94.0                                                                             3404
+red     azir            mana_cost_increased False --> True                                                              3404
+red     kindred         ability triggered                                                                               3404
+red     kindred         mana_cost_increased True --> False                                                              3404
+red     kindred         deals blue     kayn         693  --> 372      shield 0    --> 0                                 3404
+blue    kayn            healing_strength 1 --> 0.5                                                                      3404
+red     kindred         moves from (6 , 3)   to   (4 , 1)                                                               3404
+blue: 4/red: 3
+red     azir           cleared idle                                                                                     3534
+red     azir            attacks blue     kayn         372  --> 297        shield 0    --> 0      crit                   3535
+red     azir            mana 94.0 --> 104.0                                                                             3535
+blue    kayn           cleared idle                                                                                     3755
+blue    kayn            attacks red      azir         309  --> 248        shield 0    --> 0                             3756
+red     azir            mana 104.0 --> 107.7                                                                            3756
+blue    kindred        cleared idle                                                                                     3757
+blue    kindred         has a new target: red     kindred   [4, 1]                                                      3758
+blue    kindred         attacks red      kindred      317  --> 259        shield 0    --> 0                             3758
+blue    kindred         mana 0 --> 10                                                                                   3758
+blue    aphelios       cleared idle                                                                                     4005
+blue    aphelios        attacks red      ezreal       667  --> 626        shield 0    --> 0                             4006
+red     ezreal          mana 135.0 --> 137.5                                                                            4006
+blue    aphelios        mana 0 --> 10                                                                                   4006
+blue    ashe           cleared idle                                                                                     4334
+blue    ashe            has a new target: red     kindred   [4, 1]                                                      4335
+blue    ashe            ability triggered                                                                               4335
+blue    ashe            AS 0.75 --> 1.087                                                                               4335
+blue    ashe            ability_active False --> True                                                                   4335
+blue    ashe            attacks red      kindred      259  --> 229        shield 0    --> 0       ability               4336
+blue    ashe            attacks red      kindred      229  --> 199        shield 0    --> 0       ability               4336
+blue    ashe            attacks red      kindred      199  --> 169        shield 0    --> 0       ability               4336
+blue    ashe            attacks red      kindred      169  --> 124        shield 0    --> 0      crit  ability          4336
+blue    ashe            attacks red      kindred      124  --> 94         shield 0    --> 0       ability               4336
+red     ezreal         cleared idle                                                                                     4452
+red     ezreal          attacks blue     kindred      442  --> 342        shield 0    --> 0      crit                   4453
+blue    kindred         mana 10 --> 16.0                                                                                4453
+red     ezreal          mana 137.5 --> 147.5                                                                            4453
+red     kindred        cleared idle                                                                                     4655
+red     kindred         attacks blue     kayn         297  --> 247        shield 0    --> 0                             4656
+blue    kayn            mana 0 --> 3.0                                                                                  4656
+red     kindred         mana 0 --> 10                                                                                   4656
+red     azir           cleared idle                                                                                     4712
+red     azir            attacks blue     kayn         247  --> 197        shield 0    --> 0                             4713
+blue    kayn            mana 3.0 --> 6.0                                                                                4713
+red     azir            mana 107.7 --> 117.7                                                                            4713
+blue    kayn           cleared idle                                                                                     4757
+blue    kayn            attacks red      azir         248  --> 186        shield 0    --> 0                             4758
+red     azir            mana 117.7 --> 121.3                                                                            4758
+blue    kayn            mana 6.0 --> 16.0                                                                               4758
+blue    kindred        cleared idle                                                                                     5009
+blue    kindred         attacks red      kindred      94   --> 35         shield 0    --> 0                             5010
+red     kindred         mana 10 --> 13.5                                                                                5010
+blue    kindred         mana 16.0 --> 26.0                                                                              5010
+blue    ashe           cleared idle                                                                                     5256
+blue    ashe            attacks red      kindred      35   --> 5          shield 0    --> 0       ability               5257
+red     kindred         mana 13.5 --> 15.3                                                                              5257
+blue    ashe            attacks red      kindred      5    --> -25        shield 0    --> 0       ability               5257
+red     kindred         mana 15.3 --> 17.1                                                                              5257
+red     kindred         dies                                                                                            5257
+blue    ashe            has a new target: red     ezreal    [5, 5]                                                      5257
+blue    ashe            attacks red      ezreal       626  --> 581        shield 0    --> 0      crit  ability          5257
+red     ezreal          mana 147.5 --> 150.2                                                                            5257
+blue    ashe            attacks red      ezreal       581  --> 551        shield 0    --> 0       ability               5257
+red     ezreal          mana 150.2 --> 152.0                                                                            5257
+blue    ashe            attacks red      ezreal       551  --> 521        shield 0    --> 0       ability               5257
+red     ezreal          mana 152.0 --> 153.8                                                                            5257
+blue: 4/red: 2
+blue    aphelios       cleared idle                                                                                     5340
+blue    aphelios        attacks red      ezreal       521  --> 479        shield 0    --> 0                             5341
+red     ezreal          mana 153.8 --> 156.3                                                                            5341
+blue    aphelios        mana 10 --> 20                                                                                  5341
+red     ezreal         cleared idle                                                                                     5565
+red     ezreal          ability triggered                                                                               5566
+blue    kayn           cleared idle                                                                                     5759
+blue    kayn            attacks red      azir         186  --> 125        shield 0    --> 0                             5760
+red     azir            mana 121.3 --> 125.0                                                                            5760
+blue    kayn            mana 16.0 --> 26.0                                                                              5760
+red     azir           cleared idle                                                                                     5890
+red     azir            attacks blue     kayn         197  --> 122        shield 0    --> 0      crit                   5891
+blue    kayn            mana 26.0 --> 30.5                                                                              5891
+red     azir            mana 125.0 --> 135.0                                                                            5891
+blue    ashe            attacks red      azir         125  --> 33         shield 0    --> 0      hunter                 6000
+red     azir            mana 135.0 --> 140.6                                                                            6000
+blue    kayn            attacks red      azir         33   --> -60        shield 0    --> 0      hunter                 6000
+red     azir            mana 140.6 --> 146.1                                                                            6000
+red     azir            dies                                                                                            6000
+blue    kindred         has a new target: red     ezreal    [5, 5]                                                      6000
+blue    kindred         attacks red      ezreal       479  --> 391        shield 0    --> 0      hunter                 6000
+blue    aphelios        attacks red      ezreal       391  --> 329        shield 0    --> 0      hunter                 6000
+red     ezreal          attacks blue     kayn         122  --> 36         shield 0    --> 0      hunter                 6000
+blue    kayn            mana 30.5 --> 35.6                                                                              6000
+blue: 4/red: 1
+blue    kindred        cleared idle                                                                                     6261
+blue    kindred         moves from (3 , 2)   to   (4 , 2)                                                               6262
+blue    aphelios       cleared idle                                                                                     6675
+blue    aphelios        attacks red      ezreal       329  --> 287        shield 0    --> 0                             6676
+blue    aphelios        mana 20 --> 30                                                                                  6676
+blue    kayn           cleared idle                                                                                     6761
+blue    kayn            has a new target: red     ezreal    [5, 5]                                                      6762
+blue    kayn            moves from (7 , 3)   to   (7 , 4)                                                               6762
+blue    kindred        cleared idle                                                                                     6813
+blue    kindred         attacks red      ezreal       287  --> 200        shield 0    --> 0      crit                   6814
+blue    kindred         mana 26.0 --> 36.0                                                                              6814
+blue    kindred         ability triggered                                                                               6815
+blue    kindred         deals red      ezreal       200  --> -175     shield 0    --> 0                                 6815
+red     ezreal          dies                                                                                            6815
+red     ezreal          healing_strength 1 --> 0.5                                                                      6815
+blue    kindred         moves from (4 , 2)   to   (6 , 2)                                                               6815
+blue: 4/red: 0
+BLUE TEAM WON

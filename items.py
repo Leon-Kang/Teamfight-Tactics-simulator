@@ -216,7 +216,6 @@ def giant_slayer(champion, target):
             return 1 + (item_amount * 0.90)
         else:
             return 1 + (item_amount * 0.10)
-
     else:
         return 1.00
 
@@ -260,10 +259,10 @@ def hextech_gunblade(champion, damage):
         # if we can just heal some amount without shields, initiate the heal
         if healable > heal:
             champion.add_que('heal', -1, None, None, heal)
-
         else:
             # if we know there's more healing to do than hp missing, heal the amount (if the champion isn't max hp)
-            if healable > 0: champion.add_que('heal', -1, None, None, healable)
+            if healable > 0:
+                champion.add_que('heal', -1, None, None, healable)
             heal -= healable
 
             # figure out the shield amount
@@ -279,20 +278,19 @@ def hextech_gunblade(champion, damage):
             shield_before = champion.shield_amount()
             if len(old_shield_identifier) > 0:
                 old_shield_identifier = old_shield_identifier[0]
-                old_shield = list(
-                    filter(lambda x: (x['identifier'] == old_shield_identifier[1] and x['applier'] == champion),
-                           champion.shields))
+                old_shield = list(filter(lambda x: (x['identifier'] == old_shield_identifier[1]
+                                                    and x['applier'] == champion),
+                                         champion.shields))
 
                 # remove the old hextech shield and replace it with a new one
                 for s in champion.shields:
-                    if (s['applier'] == champion and s['identifier'] == old_shield_identifier[1]):
+                    if s['applier'] == champion and s['identifier'] == old_shield_identifier[1]:
                         champion.shields.remove(s)
 
             if len(old_shield) > 0:
                 heal += old_shield[0]['amount']
 
-            if heal > shield_max:
-                heal = shield_max
+            heal = min(heal, shield_max)
             heal = round(heal, 1)
 
             # PROBABLY COULD'VE JUST MODIFIED THE OLD SHIELD THO
@@ -322,8 +320,8 @@ def infinity_edge(champion):
         bonus_damage = h.crit_chance + item_stats.crit_chance['infinity_edge'] - 1
 
         new_crit_chance = h.crit_chance + item_stats.crit_chance['infinity_edge']
-        if new_crit_chance > 1:
-            new_crit_chance = 1
+        new_crit_chance = min(new_crit_chance, 1)
+
         change_stat(h, 'crit_chance', new_crit_chance)
 
         if bonus_damage >= 0.01:
@@ -457,14 +455,15 @@ def runaans_hurricane(champion, target):
     if 'runaans_hurricane' in champion.items:
         item_amount = len(list(filter(lambda x: x == 'runaans_hurricane', champion.items)))
         for i in range(0, item_amount):
-
             enemy_team = champion.enemy_team()
             targets = list(filter(lambda x: x != target, enemy_team))
             random.shuffle(targets)
 
             runaans_target = target
-            if len(targets) > 0: runaans_target = targets[0]
-            champion.attack(champion.AD * item_stats.damage['runaans_hurricane'] - champion.AD, runaans_target, True)
+            if len(targets) > 0:
+                runaans_target = targets[0]
+            champion.attack(champion.AD * item_stats.damage['runaans_hurricane'] - champion.AD,
+                            runaans_target, True)
 
 
 # hexagonal coordinates are fun and all
@@ -570,22 +569,23 @@ def statikk_shiv(champion, target):
                     champion.spell(t, damage, true_damage, True)
 
 
-def sunfire_cape(champion, data={'loop': False}):
+def sunfire_cape(champion, data=None):
     # the function gets called immediately which means that the enemy team could still be empty
     # call it again in one millisecond when the round has actually started
+    if data is None:
+        data = {'loop': False}
     if not data['loop']:
         champion.add_que('execute_function', 1, [sunfire_cape, {'loop': True}])
     else:
-
-        enemies = field.enemies_in_distance(champion, champion.y, champion.x, item_stats.item_range['sunfire_cape'])
+        enemies = field.enemies_in_distance(champion, champion.y, champion.x,
+                                            item_stats.item_range['sunfire_cape'])
         random.shuffle(enemies)
         if len(enemies) > 0:
             target = enemies[0]
-
             champion.burn(target)
-
             # just call this same function every x seconds
-            champion.add_que('execute_function', item_stats.cooldown['sunfire_cape'], [sunfire_cape, {'loop': True}])
+            champion.add_que('execute_function', item_stats.cooldown['sunfire_cape'],
+                             [sunfire_cape, {'loop': True}])
 
 
 def thiefs_gloves(champion):
@@ -621,7 +621,8 @@ titans_resolve_list = []  # [champion, stacks, maxxed]
 def titans_resolve(champion, target, crit):
     # attacker in spells and physical attacks
     if 'titans_resolve' in champion.items:
-        if (crit): titans_resolve_helper(champion)
+        if crit:
+            titans_resolve_helper(champion)
 
     # target in both cases
     if 'titans_resolve' in target.items:
@@ -661,7 +662,8 @@ def trap_claw(champion, target):
     target.items.remove('trap_claw')
 
     change_stat(champion, 'stunned', True)
-    champion.add_que('change_stat', item_stats.item_stun_duration['trap_claw'], None, 'stunned', False)
+    champion.add_que('change_stat', item_stats.item_stun_duration['trap_claw'],
+                     None, 'stunned', False)
 
     if not target.stunned:
         target.add_que('change_stat', 1, None, 'stunned', False)
@@ -703,7 +705,9 @@ def zephyr(champion):
         target_coords = [7 - holder.y, 6 - holder.x]
         targets = list(filter(lambda x: (x.champion), holder.enemy_team()))
         targets = sorted(targets, key=lambda x: field.distance({'y': x.y, 'x': x.x},
-                                                               {'y': target_coords[0], 'x': target_coords[1]}, False))
+                                                               {'y': target_coords[0],
+                                                                'x': target_coords[1]},
+                                                               False))
         targets = targets[:item_amount]
         for t in targets:
             c = coords[t.y][t.x]
@@ -720,14 +724,14 @@ def zephyr(champion):
 def zzrot_portal(champion):
     units = champion.own_team() + champion.enemy_team()
     holders = list(filter(lambda x: 'zzrot_portal' in x.items, units))
-    for holder in holders:
-
+    for _ in holders:
         # taunting
         neighbor_enemies = field.enemies_in_distance(champion, champion.y, champion.x, 1)
         for n in neighbor_enemies:
             old_target = n.target
             n.add_que('change_target', -1, None, None, champion)
-            n.add_que('change_target', item_stats.item_change_length['zzrot_portal'], None, None, old_target)
+            n.add_que('change_target', item_stats.item_change_length['zzrot_portal'],
+                      None, None, old_target)
 
 
 # summon the blobs

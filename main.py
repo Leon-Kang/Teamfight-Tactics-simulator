@@ -5,129 +5,24 @@ from champion_functions import MILLIS
 
 import multiprocessing
 
-import tkinter as tk
-
-# master = tk.Tk()
-# tk.Label(master, text="Team data").grid(row=0)
-# tk.Label(master, text="Iterations").grid(row=1)
-# tk.Label(master, text="Results").grid(row=2)
-# tk.Label(master, text='Status').grid(row=3)
-#
-# team_json = tk.Entry(master)
-# iterations = tk.Entry(master)
-# blue_results = tk.Entry(master)
-# red_results = tk.Entry(master)
-# bugged_out_results = tk.Entry(master)
-# draw_results = tk.Entry(master)
-# status = tk.Entry(master)
-#
-# team_json.grid(row=0, column=1)
-# iterations.grid(row=1, column=1)
-# blue_results.grid(row=2, column=1)
-# red_results.grid(row=2, column=2)
-# bugged_out_results.grid(row=2, column=3)
-# draw_results.grid(row=2, column=4)
-# status.grid(row=3, column=1)
-
-
-# team_data = team_json.get()
-# iterations_data = iterations.get()
-
-
-# def set_status(val):
-#     status.delete(0, tk.END)
-#     status.insert(0, val)
-
-
-# set_status('idle')
-
-
-test_json = {
-    "blue": [
-        {
-            "name": "ashe",
-            "stars": "1",
-            "items": [],
-            "y": "2",
-            "x": "1"
-        },
-        {
-            "name": "ashe",
-            "stars": "1",
-            "items": [],
-            "y": "2",
-            "x": "1"
-        },
-        {
-            "name": "ashe",
-            "stars": "1",
-            "items": [],
-            "y": "2",
-            "x": "1"
-        },
-        {
-            "name": "ashe",
-            "stars": "1",
-            "items": [],
-            "y": "2",
-            "x": "1"
-        },
-        {
-            "name": "aphelios",
-            "stars": "1",
-            "items": [],
-            "y": "1",
-            "x": "3"
-        }
-    ],
-    "red": [
-        {
-            "name": "azir",
-            "stars": "1",
-            "items": [],
-            "y": "7",
-            "x": "2"
-        },
-        {
-            "name": "ashe",
-            "stars": "1",
-            "items": [],
-            "y": "6",
-            "x": "2"
-        },
-        {
-            "name": "ashe",
-            "stars": "1",
-            "items": [],
-            "y": "6",
-            "x": "2"
-        },
-        {
-            "name": "ashe",
-            "stars": "1",
-            "items": [],
-            "y": "6",
-            "x": "2"
-        },
-        {
-            "name": "aphelios",
-            "stars": "1",
-            "items": [],
-            "y": "5",
-            "x": "4"
-        }
-    ]
-}
+test_json = {"blue": [{"name": "nami", "stars": "1", "items": [], "y": "3", "x": "4"},
+                      {"name": "ashe", "stars": "1", "items": [], "y": "2", "x": "1"},
+                      {"name": "kayn", "stars": "1", "items": [], "y": "2", "x": "2"},
+                      {"name": "kindred", "stars": "1", "items": [], "y": "2", "x": "4"},
+                      {"name": "aphelios", "stars": "1", "items": [], "y": "1", "x": "3"}],
+             "red": [{"name": "azir", "stars": "1", "items": [], "y": "7", "x": "2"},
+                     {"name": "ashe", "stars": "1", "items": [], "y": "6", "x": "2"},
+                     {"name": "kindred", "stars": "1", "items": [], "y": "6", "x": "3"},
+                     {"name": "aphelios", "stars": "1", "items": [], "y": "5", "x": "4"},
+                     {"name": "ezreal", "stars": "1", "items": [], "y": "5", "x": "5"}]}
 
 
 def run():
-    # global test_multiple
-    # set_status('running')
-
-    # team_data = team_json.get()
     team_data = test_json
-    iterations_data = 10
+    iterations_data = 1
 
+    # filename = datetime.datetime.now().strftime("%H:%M:%S")
+    filename = 'file1'
     jobs = []
 
     if team_data:
@@ -137,22 +32,11 @@ def run():
 
             try:
                 champion.run(champion.champion, team_data)
-            except:
+            except Exception as e:
+                print(e)
                 champion.test_multiple['bugged out'] += 1
 
-            # blue_results.delete(0, tk.END)
-            # blue_results.insert(0, 'blue: ' + str(champion.test_multiple['blue']))
-            # red_results.delete(0, tk.END)
-            # red_results.insert(0, 'red: ' + str(champion.test_multiple['red']))
-            # bugged_out_results.delete(0, tk.END)
-            # bugged_out_results.insert(0, 'bugged rounds: ' + str(champion.test_multiple['bugged out']))
-            # draw_results.delete(0, tk.END)
-            # draw_results.insert(0, 'draws: ' + str(champion.test_multiple['draw']))
-            # master.update()
-
-            filename = datetime.datetime.now().strftime("%H:%M:%S")
-
-            with open(filename + '.txt', "w") as out:
+            with open(filename + '.txt', 'a') as out:
                 if MILLIS() < 75000:
                     if champion.log[-1] == 'BLUE TEAM WON':
                         champion.test_multiple['blue'] += 1
@@ -166,23 +50,7 @@ def run():
             out.close()
 
     champion.test_multiple = {'blue': 0, 'red': 0, 'bugged out': 0, 'draw': 0}
-    # set_status('idle')
-    # master.update()
 
-    # set_stop(False)
-
-
-#
-# start_simulations = tk.Button(master, text='Run simulations', command=lambda: run())
-# start_simulations.grid(row=4, column=1, sticky=tk.W, pady=4)
-#
-# stop_simulations = tk.Button(master, text='Stop', command=lambda: set_status('idle'))
-# stop_simulations.grid(row=4, column=2, sticky=tk.W, pady=4)
-#
-# quit_simulations = tk.Button(master, text='Quit', command=lambda: master.quit())
-# quit_simulations.grid(row=4, column=3, sticky=tk.W, pady=4)
-#
-# tk.mainloop()
 
 if __name__ == '__main__':
     run()
