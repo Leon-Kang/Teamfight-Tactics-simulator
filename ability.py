@@ -1079,7 +1079,8 @@ def kindred(champion):
 def leesin(champion):
     default_ability_calls(champion)
     # draw a line from lee to target and continue it until it hits an edge
-    if not champion.target: field.find_target(champion)
+    if not champion.target:
+        field.find_target(champion)
     if len(champion.enemy_team()) > 0:
         line_to_wall_behind_target = field.rectangle_from_champion_to_wall_behind_target(champion, 1, champion.target.y,
                                                                                          champion.target.x)
@@ -1333,7 +1334,8 @@ def lissandra(champion):
         if c and c.team != champion.team and c.champion:
             dagger_target = c
             break
-    if not dagger_target: dagger_target = champion.target
+    if not dagger_target:
+        dagger_target = champion.target
 
     # find the first three points of the cone (blue in 'lissandra_ult.png')
     primary_neighbors = field.find_neighbors(dagger_target.y, dagger_target.x, True)

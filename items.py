@@ -535,7 +535,7 @@ statikk_shiv_list = []
 
 
 def statikk_shiv(champion, target):
-    if ('statikk_shiv' in champion.items):
+    if 'statikk_shiv' in champion.items:
         item_amount = len(list(filter(lambda x: x == 'statikk_shiv', champion.items)))
 
         inx = -1

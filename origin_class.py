@@ -122,7 +122,8 @@ def calculate_cultist_stars(blue, red):
         for c in eval(t):
             if is_trait(c, 'cultist'):
                 cultist_stars[t] += c.stars
-                if c.chosen == 'cultist': cultist_stars[t] += 1
+                if c.chosen == 'cultist':
+                    cultist_stars[t] += 1
 
 
 def cultist(champion, team):
@@ -181,8 +182,9 @@ divine_list = []  # champion, champion, champion
 
 def divine(champion, target, attack):
     # counting the x attacks for ascending
-    if (is_trait(champion, 'divine') and get_origin_class_tier(champion.team,
-                                                               'divine') > 0 and not champion in divine_list):
+    if (is_trait(champion, 'divine')
+            and get_origin_class_tier(champion.team, 'divine') > 0
+            and not champion in divine_list):
         if attack:
             divine_tier = get_origin_class_tier(champion.team, 'divine')
 
@@ -356,7 +358,8 @@ def the_boss_helper(champion, data):
         items.change_stat(champion, 'health', champion.health + heal_amount)
 
         # pumped up -status
-        if champion.health == champion.max_health: items.change_stat(champion, 'pumped_up', True)
+        if champion.health == champion.max_health:
+            items.change_stat(champion, 'pumped_up', True)
 
         items.change_stat(champion, 'AS', champion.AS * origin_class_stats.AS['the_boss'])
         items.change_stat(champion, 'movement_delay',
@@ -394,23 +397,24 @@ def warlord(blue_team, red_team):
         tier = get_origin_class_tier(t, 'warlord')
         if tier > 0:
             for c in teams[t]:
-                if (is_trait(c, 'warlord')):
+                if is_trait(c, 'warlord'):
                     wins = config.WARLORD_WINS[t]
-                    if (wins > 5): wins = 5
+                    if wins > 5:
+                        wins = 5
 
                     hp_add = origin_class_stats.health['warlord'][tier]
                     hp_add = hp_add * (1 + wins * origin_class_stats.increasement['warlord'])
 
                     SP_add = origin_class_stats.SP['warlord'][tier]
                     SP_add = origin_class_stats.SP['warlord'][tier] * (
-                                1 + wins * origin_class_stats.increasement['warlord'])
+                            1 + wins * origin_class_stats.increasement['warlord'])
 
                     items.change_stat(c, 'health', c.health + hp_add, 'warlord')
                     items.change_stat(c, 'SP', c.SP + SP_add, 'warlord')
 
 
 def adept(blue_team, red_team):
-    teams = {'blue': blue_team, 'red': red_team}
+    teams = { 'blue': blue_team, 'red': red_team }
 
     for t in ['blue', 'red']:
         tier = get_origin_class_tier(t, 'adept')
@@ -423,7 +427,7 @@ def adept(blue_team, red_team):
 
 
 def assassin(blue_team, red_team):
-    teams = {'blue': blue_team, 'red': red_team}
+    teams = { 'blue': blue_team, 'red': red_team }
 
     for t in ['blue', 'red']:
         tier = get_origin_class_tier(t, 'assassin')
@@ -438,8 +442,7 @@ def assassin(blue_team, red_team):
 
                 items.change_stat(c, 'champion', False, '  assassin')
                 items.change_stat(c, 'stunned', True, '  assassin')
-                field.coordinates[c.y][
-                    c.x] = None  # allows the units to "swap" places instead of treating the hex as taken
+                field.coordinates[c.y][c.x] = None  # allows the units to "swap" places instead of treating the hex as taken
 
                 c.add_que('execute_function', config.LEAP_DELAY, [field.leap_to_back_line, {'trait': '  assassin'}])
 
@@ -451,10 +454,13 @@ def brawler(blue_team, red_team):
         tier = get_origin_class_tier(t, 'brawler')
         if tier > 0:
             for c in teams[t]:
-                if (is_trait(c, 'brawler')):
-                    items.change_stat(c, 'max_health', c.max_health + origin_class_stats.health['brawler'][tier],
+                if is_trait(c, 'brawler'):
+                    items.change_stat(c, 'max_health',
+                                      c.max_health + origin_class_stats.health['brawler'][tier],
                                       'brawler')
-                    items.change_stat(c, 'health', c.health + origin_class_stats.health['brawler'][tier], 'brawler')
+                    items.change_stat(c, 'health',
+                                      c.health + origin_class_stats.health['brawler'][tier],
+                                      'brawler')
 
 
 def dazzler(champion, target):
@@ -485,9 +491,10 @@ def duelist(blue_team, red_team):
         tier = get_origin_class_tier(t, 'duelist')
         if (tier > 0):
             for c in teams[t]:
-                if (is_trait(c, 'duelist')):
+                if is_trait(c, 'duelist'):
                     items.change_stat(c, 'movement_delay',
-                                      c.movement_delay * origin_class_stats.movement_delay['duelist'], 'duelist')
+                                      c.movement_delay * origin_class_stats.movement_delay['duelist'],
+                                      'duelist')
 
 
 # AS changes
@@ -504,7 +511,7 @@ def duelist_helper(champion):
             stacks = 1
         else:
             for i, d in enumerate(duelist_helper_list):
-                if (d[0] == champion):
+                if d[0] == champion:
                     duelist_helper_list[i][1] += 1
                     stacks = duelist_helper_list[i][1]
 
@@ -561,10 +568,11 @@ def keeper(blue_team, red_team):
                         u = coords[h[0]][h[1]]
                         if u and u.team == c.team and u.champion:
                             shield = origin_class_stats.shield['keeper'][tier]
-                            if (is_trait(u, 'keeper')):
+                            if is_trait(u, 'keeper'):
                                 shield *= (1 + origin_class_stats.increasement['keeper'])
 
-                            if (c.chosen): shield *= 2
+                            if c.chosen:
+                                shield *= 2
 
                             shield_identifier = round(c.max_health * shield * u.AD * (u.AS * 5))
 
@@ -591,7 +599,7 @@ def mystic(blue_team, red_team):
         tier = get_origin_class_tier(t, 'mystic')
         if tier > 0:
             for c in teams[t]:
-                if (is_trait(c, 'mystic')):
+                if is_trait(c, 'mystic'):
                     items.change_stat(c, 'MR', c.MR + origin_class_stats.MR['mystic'][tier], 'mystic')
 
 
@@ -604,8 +612,7 @@ def shade(blue_team, red_team):
             if is_trait(c, 'shade'):
                 items.change_stat(c, 'champion', False, '  shade')
                 items.change_stat(c, 'stunned', True, '  shade')
-                field.coordinates[c.y][
-                    c.x] = None  # allows the units to "swap" places instead of treating the hex as taken
+                field.coordinates[c.y][c.x] = None  # allows the units to "swap" places instead of treating the hex as taken
 
                 c.add_que('execute_function', config.LEAP_DELAY, [field.leap_to_back_line, {'trait': '  shade'}])
 
@@ -614,7 +621,8 @@ shade_helper_list = []  # [champion, attacks]
 
 
 def shade_helper(champion):
-    if not champion.target: field.find_target(champion)
+    if not champion.target:
+        field.find_target(champion)
 
     tier = get_origin_class_tier(champion.team, 'shade')
     if tier > 0:
@@ -629,7 +637,8 @@ def shade_helper(champion):
 
         if attacks % 3 == 0:
             for c in champion.enemy_team():
-                if c.target == champion: c.target = None
+                if c.target == champion:
+                    c.target = None
 
         if attacks % 4 == 0 and attacks > 1:
             if champion.target.health > 0:

@@ -223,8 +223,8 @@ def hexes_in_distance(target_y, target_x, radius, allow_outside_map=False):
     c = coordinates
     for i in range(-100, 100):
         for j in range(-100, 100):
-            if (allow_outside_map or (i >= 0 and i <= 7 and j >= 0 and j <= 6)):
-                if (distance({'y': i, 'x': j}, {'y': target_y, 'x': target_x}, False) <= radius):
+            if allow_outside_map or (i >= 0 and i <= 7 and j >= 0 and j <= 6):
+                if distance({'y': i, 'x': j}, {'y': target_y, 'x': target_x}, False) <= radius:
                     hexes_within.append([i, j])
 
     return hexes_within
@@ -236,8 +236,8 @@ def hexes_distance_away(target_y, target_x, radius, allow_outside_map=False):
     c = coordinates
     for i in range(-100, 100):
         for j in range(-100, 100):
-            if (allow_outside_map or (i >= 0 and i <= 7 and j >= 0 and j <= 6)):
-                if (distance({'y': i, 'x': j}, {'y': target_y, 'x': target_x}, False) == radius):
+            if allow_outside_map or (i >= 0 and i <= 7 and j >= 0 and j <= 6):
+                if distance({'y': i, 'x': j}, {'y': target_y, 'x': target_x}, False) == radius:
                     hexes_within.append([i, j])
 
     return hexes_within
@@ -247,7 +247,7 @@ def distance(champion1, champion2, objects):
     c1_coords = {}
     c2_coords = {}
 
-    if (objects):
+    if objects:
         c1_coords = to_cube_coords(champion1)
         c2_coords = to_cube_coords(champion2)
     else:
@@ -308,7 +308,7 @@ def cube_round(cube):
     y_diff = abs(ry - cube['y'])
     z_diff = abs(rz - cube['z'])
 
-    if (x_diff > y_diff and x_diff > z_diff):
+    if x_diff > y_diff and x_diff > z_diff:
         rx = -ry - rz
     elif y_diff > z_diff:
         ry = -rx - rz
@@ -330,7 +330,7 @@ def line(starting_point, end_point):
 # the rectangle that's used in azir's, ezreal's and TF's ults
 def rectangle_from_champion_to_wall_behind_target(champion, width, target_y, target_x, allow_outside_map=False):
     direction = 'vertical'
-    if (abs(target_x - champion.x) >= abs(target_y - champion.y)):
+    if abs(target_x - champion.x) >= abs(target_y - champion.y):
         direction = 'diagonal'
 
     change_y = target_y - champion.y
@@ -346,22 +346,26 @@ def rectangle_from_champion_to_wall_behind_target(champion, width, target_y, tar
     loop_end = math.floor(width / 2) + 1
 
     for i in range(loop_start, loop_end):
-        if (direction == 'vertical'):
+        if direction == 'vertical':
             hexes.append(line({'y': champion.y, 'x': champion.x + i}, {'y': target_y, 'x': target_x + i}))
-        if (direction == 'diagonal'):
+        if direction == 'diagonal':
             j = 0
             # hexagonal coordinates are absolute aids
-            if (i == 1):
-                if (champion.y % 2 == 1):
-                    if (target_x > champion.x): j = -1
-                if (champion.y % 2 == 0):
-                    if (target_x < champion.x): j = 1
+            if i == 1:
+                if champion.y % 2 == 1:
+                    if target_x > champion.x:
+                        j = -1
+                if champion.y % 2 == 0:
+                    if target_x < champion.x:
+                        j = 1
 
-            if (i == -1):
-                if (champion.y % 2 == 1):
-                    if (target_x < champion.x): j = -1
-                if (champion.y % 2 == 0):
-                    if (target_x > champion.x): j = 1
+            if i == -1:
+                if champion.y % 2 == 1:
+                    if target_x < champion.x:
+                        j = -1
+                if champion.y % 2 == 0:
+                    if target_x > champion.x:
+                        j = 1
 
             hexes.append(line({'y': champion.y + i, 'x': champion.x + j}, {'y': target_y + i, 'x': target_x + j}))
 
@@ -369,7 +373,7 @@ def rectangle_from_champion_to_wall_behind_target(champion, width, target_y, tar
     for i, hexline in enumerate(hexes):
         affected_hexes.append([])
         for h in hexline:
-            if (allow_outside_map or (h[0] >= 0 and h[0] <= 7 and h[1] >= 0 and h[1] <= 6)):
+            if allow_outside_map or (h[0] >= 0 and h[0] <= 7 and h[1] >= 0 and h[1] <= 6):
                 d = distance({'y': champion.y, 'x': champion.x}, {'y': h[0], 'x': h[1]}, False)
                 h.append(d)
                 affected_hexes[i].append(h)
@@ -382,7 +386,7 @@ def leap_to_back_line(champion, data):
 
     # set the preferred coordinate which matches the other side of the baord (y-wise) at still somewhat same x-line
     preferred_y = -1
-    if (champion.y <= 3):
+    if champion.y <= 3:
         preferred_y = 7
     else:
         preferred_y = 0
@@ -393,7 +397,7 @@ def leap_to_back_line(champion, data):
     for j in range(0, 7):
         pool.append([i, j])
 
-    if (i == 0):
+    if i == 0:
         i += 1
     else:
         i -= 1
@@ -402,21 +406,22 @@ def leap_to_back_line(champion, data):
 
     possible_hexes = []
     for i, p in enumerate(pool):
-        if (not coordinates[p[0]][p[1]]):
+        if not coordinates[p[0]][p[1]]:
             d = distance({'y': p[0], 'x': p[1]}, {'y': preferred_y, 'x': champion.x}, False)
             possible_hexes.append([p[0], p[1], d])
 
-    if (preferred_y == 0): possible_hexes = sorted(possible_hexes, key=lambda x: (x[0], x[2]))
-    if (preferred_y == 7):
+    if preferred_y == 0:
+        possible_hexes = sorted(possible_hexes, key=lambda x: (x[0], x[2]))
+    if preferred_y == 7:
         possible_hexes = sorted(possible_hexes, key=lambda x: x[0], reverse=True)
         possible_hexes = sorted(possible_hexes, key=lambda x: x[2])
 
     target_hex = None
-    if (len(possible_hexes) > 0):
+    if len(possible_hexes) > 0:
         target_hex = [possible_hexes[0][0], possible_hexes[0][1]]
 
     # do the actual leaping
-    if (target_hex):
+    if target_hex:
         champion.print(' leaps')
         champion.move(target_hex[0], target_hex[1], True)
         champion.clear_que_idle()

@@ -609,9 +609,8 @@ def change_stat(champion, action, length, function, stat, value, data):
             'quicksilver'] and value == True and
                 (stat == 'stunned' or stat == 'disarmed' or stat == 'blinded')):
             if not ('rapid_firecannon' in champion.items and value == True and stat == 'blinded'):
-                if (not (champion.name == 'galio' and (
-                        MILLIS() - origin_class.galio_spawn_time[champion.team] <= origin_class_stats.cc_immune[
-                    'cultist']) and
+                if (not (champion.name == 'galio'
+                         and (MILLIS() - origin_class.galio_spawn_time[champion.team] <= origin_class_stats.cc_immune['cultist']) and
                          (stat == 'stunned' or stat == 'disarmed' or stat == 'blinded'))):
                     end_value = value
                     start_value = getattr(champion, stat)
@@ -630,8 +629,10 @@ def change_stat(champion, action, length, function, stat, value, data):
                         start_value = [[champion.will_revive[0][0].name], [champion.will_revive[1][0]]]
 
                     if end_value != start_value:
-                        if isinstance(start_value, float): start_value = round(start_value, 3)
-                        if isinstance(end_value, float): end_value = round(end_value, 3)
+                        if isinstance(start_value, float):
+                            start_value = round(start_value, 3)
+                        if isinstance(end_value, float):
+                            end_value = round(end_value, 3)
                         champion.print(' {} {} --> {}'.format(stat, start_value, end_value))
                     setattr(champion, stat, end_value)
             else:
