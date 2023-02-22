@@ -53,7 +53,7 @@ def kalista(champion, target):
         # target = champion.target
         if len(kalista_targets) > 0:
             for i, v in enumerate(kalista_targets):
-                if v[0] == champion, v[1] == target:
+                if v[0] == champion and v[1] == target:
                     found = True
                     index = i
                     break

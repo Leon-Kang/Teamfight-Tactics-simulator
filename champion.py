@@ -20,8 +20,9 @@ log = []
 
 
 def printt(msg):
-    if (config.PRINTMESSAGES): log.append(msg)
-    # if(config.PRINTMESSAGES): print(msg)
+    if config.PRINTMESSAGES:
+        log.append(msg)
+        print(msg)
 
 
 test_multiple = {'blue': 0, 'red': 0, 'bugged out': 0, 'draw': 0}
@@ -452,23 +453,27 @@ def run(champion, team_data):
     reset_global_variables()
 
     # with open('team.json', 'r') as infile:
-    data = (json.loads(team_data))
+    data = team_data
     daddy_coordinates = []
 
     for c in data['blue']:
         daddy_coordinates = False
-        if (c['name'] == 'sandguard'): daddy_coordinates = [int(c["overlord_coordinates"][0]),
-                                                            int(c["overlord_coordinates"][1])]
-        blue.append(
-            champion(c['name'], int(c['stars']), 'blue', int(c['y']), int(c['x']), c['items'], False, daddy_coordinates,
-                     c['chosen']))
+        if c['name'] == 'sandguard':
+            daddy_coordinates = [int(c["overlord_coordinates"][0]),
+                                 int(c["overlord_coordinates"][1])]
+        name = c['name']
+        stars = int(c['stars'])
+        x = int(c['x'])
+        y = int(c['y'])
+        champion_cur = champion(name, stars, 'blue', y, x, c['items'], False)
+        blue.append(champion_cur)
     for c in data['red']:
         daddy_coordinates = False
-        if c['name'] == 'sandguard': daddy_coordinates = [int(c["overlord_coordinates"][0]),
-                                                          int(c["overlord_coordinates"][1])]
-        red.append(
-            champion(c['name'], int(c['stars']), 'red', int(c['y']), int(c['x']), c['items'], False, daddy_coordinates,
-                     c['chosen']))
+        if c['name'] == 'sandguard':
+            daddy_coordinates = [int(c["overlord_coordinates"][0]),
+                                 int(c["overlord_coordinates"][1])]
+        champion_cur = champion(c['name'], int(c['stars']), 'blue', int(c['y']), int(c['x']), c['items'], False)
+        red.append(champion_cur)
 
     items.chalice_of_power(blue[0])  # chalice_of_power
     items.zekes_herald(blue[0])  # chalice_of_power
@@ -482,19 +487,19 @@ def run(champion, team_data):
 
     origin_class.total_health(blue, red)
     origin_class.total_origin_class(blue[0], red[0])  # count and execute some traits
-    items.infinity_edge(blue[
-                            0])  # infinity_edge      made sure that the crit damage bonus gets regisred after everything else has gone through
-    while True:
+    items.infinity_edge(blue[0]) # infinity_edge      made sure that the crit damage bonus gets regisred after everything else has gone through
 
+    while True:
         if MILLIS() > 200000:
             test_multiple['bugged out'] += 1
             break
-        if MILLIS() > 0 and MILLIS() % origin_class_stats.length['elderwood'] == 0: origin_class.elderwood(blue,
+        if MILLIS() > 0 and MILLIS() % origin_class_stats.length['elderwood'] == 0:
+            origin_class.elderwood(blue,
                                                                                                            red)  # elderwood -trait
-        if (MILLIS() > 0 and MILLIS() % origin_class_stats.threshold['hunter'][
-            origin_class.get_origin_class_tier('blue', 'hunter')] == 0): origin_class.hunter(blue)  # hunter -trait
-        if (MILLIS() > 0 and MILLIS() % origin_class_stats.threshold['hunter'][
-            origin_class.get_origin_class_tier('red', 'hunter')] == 0): origin_class.hunter(red)  # hunter -trait
+        if MILLIS() > 0 and MILLIS() % origin_class_stats.threshold['hunter'][origin_class.get_origin_class_tier('blue', 'hunter')] == 0:
+            origin_class.hunter(blue)  # hunter -trait
+        if MILLIS() > 0 and MILLIS() % origin_class_stats.threshold['hunter'][origin_class.get_origin_class_tier('red', 'hunter')] == 0:
+            origin_class.hunter(red)  # hunter -trait
         for b in blue:
             field.action(b)
 
@@ -502,50 +507,52 @@ def run(champion, team_data):
             field.action(o)
 
         while len(que) > 0 and MILLIS() > que[0][2]:
-            champion = que[0][1]
+            champion_que = que[0][1]
             data = que[0][6]
-            # make sure that teemo's poison darts deal damage even after teemo himself has died                      #morgana deals if the ult is running and she dies                                                       #if ahri dies, she will still ult. range reduced in the executed function
-            if ((champion in blue or champion in red) or (
-                    champion.name == 'teemo' and champion.health <= 0 and que[0][3] and 'target' in que[0][3][1]) or (
-                    champion.name == 'morgana' and champion.health <= 0 and que[0][3] and 'coordinates' in que[0][3][
-                1]) or (champion.name == 'ahri' and champion.health <= 0 and que[0][3] and 'y' in que[0][3][1])):
+            c_health = champion_que.health
+            c_name = champion.name
 
+            # make sure that teemo's poison darts deal damage even after teemo himself has died                      #morgana deals if the ult is running and she dies                                                       #if ahri dies, she will still ult. range reduced in the executed function
+            if ((champion_que in blue or champion_que in red)
+                    or (c_name == 'teemo' and c_health <= 0 and que[0][3] and 'target' in que[0][3][1])
+                    or (c_name == 'morgana' and c_health <= 0 and que[0][3] and 'coordinates' in que[0][3][1])
+                    or (c_name == 'ahri' and c_health <= 0 and que[0][3] and 'y' in que[0][3][1])):
                 if que[0][0] == 'clear_idle':
-                    champion.idle = True
-                    champion.print(' cleared idle     ')
+                    champion_que.idle = True
+                    champion_que.print(' cleared idle     ')
 
                 if que[0][0] == 'change_stat':
-                    change_stat(champion, que[0][0], 0, que[0][3], que[0][4], que[0][5], data)
+                    change_stat(champion_que, que[0][0], 0, que[0][3], que[0][4], que[0][5], data)
 
                 if que[0][0] == 'heal':
-                    start_value = round(champion.health, 2)
-                    champion.health += (que[0][5] * champion.healing_strength)
-                    if champion.health > champion.max_health:
-                        champion.health = champion.max_health
-                    champion.print(' {} {} --> {}'.format('health', start_value, round(champion.health, 2)))
+                    start_value = round(champion_que.health, 2)
+                    champion_que.health += (que[0][5] * champion_que.healing_strength)
+                    if champion_que.health > champion_que.max_health:
+                        champion_que.health = champion_que.max_health
+                    champion_que.print(' {} {} --> {}'.format('health', start_value, round(c_health, 2)))
 
                 if que[0][0] == 'shield':
-                    shield(champion, que[0][0], 0, que[0][3], que[0][4], que[0][5], data)
+                    shield(champion_que, que[0][0], 0, que[0][3], que[0][4], que[0][5], data)
 
                 if que[0][0] == 'change_target':
-                    old_target = champion.target
+                    old_target = champion_que.target
                     new_target = que[0][5]
                     if new_target and new_target.health > 0:
-                        champion.target = new_target
-                        champion.target_y = new_target.y
-                        champion.target_x = new_target.x
-                        if champion.target != old_target:
-                            champion.print(
-                                ' has a new target: ' + '{:<8}'.format(champion.target.team) + '{:<8}'.format(
-                                    champion.target.name) + '  [{}, {}]'.format(champion.target.y, champion.target.x))
+                        champion_que.target = new_target
+                        champion_que.target_y = new_target.y
+                        champion_que.target_x = new_target.x
+                        if champion_que.target != old_target:
+                            champion_que.print(
+                                ' has a new target: ' + '{:<8}'.format(champion_que.target.team) + '{:<8}'.format(
+                                    champion_que.target.name) + '  [{}, {}]'.format(champion_que.target.y, champion_que.target.x))
                     else:
-                        field.find_target(champion)
+                        field.find_target(champion_que)
 
                 if que[0][0] == 'execute_function':
-                    (que[0][3][0])(champion, que[0][3][1])
+                    (que[0][3][0])(champion_que, que[0][3][1])
 
                 if que[0][0] == 'burn':
-                    champion.spell(que[0][5], 0, que[0][5].max_health * config.BURN_DMG_PER_SLICE, True, True)
+                    champion_que.spell(que[0][5], 0, que[0][5].max_health * config.BURN_DMG_PER_SLICE, True, True)
 
                 if que[0][0] == 'kill':
                     que[0][5].die()
@@ -610,7 +617,8 @@ def change_stat(champion, action, length, function, stat, value, data):
                 (stat == 'stunned' or stat == 'disarmed' or stat == 'blinded')):
             if not ('rapid_firecannon' in champion.items and value == True and stat == 'blinded'):
                 if (not (champion.name == 'galio'
-                         and (MILLIS() - origin_class.galio_spawn_time[champion.team] <= origin_class_stats.cc_immune['cultist']) and
+                         and (MILLIS() - origin_class.galio_spawn_time[champion.team] <= origin_class_stats.cc_immune[
+                            'cultist']) and
                          (stat == 'stunned' or stat == 'disarmed' or stat == 'blinded'))):
                     end_value = value
                     start_value = getattr(champion, stat)
