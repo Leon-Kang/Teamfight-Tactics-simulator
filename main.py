@@ -24,7 +24,9 @@ test_json = {"blue": [{"name": "nami", "stars": "1", "items": [], "y": "3", "x":
 app = FastAPI()
 
 
-def run():
+def run(model: InputModel):
+    print(model)
+    
     team_data = test_json
     iterations_data = 1
 
@@ -61,5 +63,4 @@ def run():
 
 @app.put("/run/{json}")
 async def run_simulate(model: InputModel):
-    print(model)
     return model

@@ -73,6 +73,8 @@ test_multiple = {
     'blue': 0, 'red': 0, 'bugged out': 0, 'draw': 0
 }
 
+outputResult = output()
+
 
 class champion:
     def __init__(self, name, stars, team, y, x, itemlist=[],
