@@ -1,9 +1,18 @@
-import datetime
+import multiprocessing
+
+from typing import Union
+from fastapi import FastAPI
+from pydantic import BaseModel
 
 import champion
 from champion_functions import MILLIS
 
-import multiprocessing
+
+class InputModel(BaseModel):
+    name: str
+    price: float
+    is_offer: Union[bool, None] = None
+
 
 test_json = {"blue": [{"name": "nami", "stars": "1", "items": [], "y": "3", "x": "4"},
                       {"name": "ashe", "stars": "1", "items": [], "y": "2", "x": "1"},
@@ -15,6 +24,9 @@ test_json = {"blue": [{"name": "nami", "stars": "1", "items": [], "y": "3", "x":
                      {"name": "kindred", "stars": "1", "items": [], "y": "6", "x": "3"},
                      {"name": "aphelios", "stars": "1", "items": [], "y": "5", "x": "4"},
                      {"name": "ezreal", "stars": "1", "items": [], "y": "5", "x": "5"}]}
+
+
+app = FastAPI()
 
 
 def run():
@@ -52,5 +64,7 @@ def run():
     champion.test_multiple = {'blue': 0, 'red': 0, 'bugged out': 0, 'draw': 0}
 
 
-if __name__ == '__main__':
-    run()
+@app.put("/run/{json}")
+async def run_simulate(model: InputModel):
+    print(model)
+    return model
