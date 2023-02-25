@@ -48,7 +48,7 @@ class OutputChampion:
         self.items = items
 
 
-class Battle:
+class BattleResult:
     def __init__(self, test_id, batch_battle_id, blue_lineups_num, red_lineups_num, blue_teams, red_teams):
         self.test_id = test_id
         self.batch_battle_id = batch_battle_id
@@ -165,5 +165,5 @@ json_data = '''
 }
 '''
 
-battle = Battle(**json.loads(json_data))
+battle = BattleResult(**json.loads(json_data))
 

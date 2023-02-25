@@ -1,3 +1,5 @@
+import datetime
+
 from stats import AD, HEALTH, ARMOR, MR, AS, RANGE, MANA, MAXMANA, MANALOCK, ABILITY_REQUIRES_TARGET, DODGE, \
     SHIELD_LENGTH, INITIATIVE_ACTIVE, ABILITY_LENGTH
 from champion_functions import reset_stat, attack, die, MILLIS, MILLISECONDS_INCREASE, add_damage_dealt
@@ -19,39 +21,46 @@ que = []
 log = []
 
 
-class champion_status:
-    def __init__(self):
-        self.stars = 0
-        self.name = ''
-        self.position = {'x': 0, 'y': 0}
+class championStatus:
+    def __init__(self, name, stars, position, damage, hp, max_hp, team, shield, AD, items):
+        self.stars = stars
+        self.name = name
+        self.position = position
         self.position_move = {'x': 0, 'y': 0}
-        self.damage = 0
-        self.hp = 0
-        self.origin_hp = 0
-        self.team = ''
-        self.shield = 0
+        self.damage = damage
+        self.hp = hp
+        self.max_hp = max_hp
+        self.team = team
+        self.shield = shield
+        self.AD = AD
+        self.items = items
 
 
 class championActive:
-    def __init__(self):
+    def __init__(self, active_type, round_team, status, target_stat, alive, action_id, AD):
         self.round = 0
-        # move, attack, dies
-        self.type = ''
+        # move, attack, dies, mana
+        self.type = active_type
         # red, blue
-        self.round_team = ''
-        self.champion = champion_status()
-        self.attack_target = champion_status()
+        self.round_team = round_team
+        self.champion: championStatus = status
+        self.attack_target: championStatus = target_stat
         self.alive = {'red': 0, 'blue': 0}
-        self.timestamp = 0
-        self.id = 0
+        self.timestamp = datetime.datetime()
+        self.id = action_id
 
 
 class output:
-    def __init__(self):
-        self.json = {}
-        self.won_team = ''
-        self.actives: [championActive] = []
+    def __init__(self, won, actions, test_id, batch_battle_id, blue_lineups_num, red_lineups_num):
+        self.test_id = test_id
+        self.batch_battle_id = batch_battle_id
+        self.blue_lineups_num = blue_lineups_num
+        self.red_lineups_num = red_lineups_num
+        self.won_team = won
+        self.actions: [championActive] = actions
 
+    def get_json(self):
+        return json.dumps(self.__dict__)
 
 
 def printt(msg):
