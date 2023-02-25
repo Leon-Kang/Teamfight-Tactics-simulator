@@ -26,11 +26,12 @@ app = FastAPI()
 
 def run(model: InputModel):
     print(model)
-    
+
     team_data = test_json
     iterations_data = 1
 
     # filename = datetime.datetime.now().strftime("%H:%M:%S")
+    # 文件夹按照：batch_battle_id -> battle_id -> xxxx.log
     filename = 'file1'
     jobs = []
 
