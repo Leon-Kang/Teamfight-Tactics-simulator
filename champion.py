@@ -19,6 +19,41 @@ que = []
 log = []
 
 
+class champion_status:
+    def __init__(self):
+        self.stars = 0
+        self.name = ''
+        self.position = {'x': 0, 'y': 0}
+        self.position_move = {'x': 0, 'y': 0}
+        self.damage = 0
+        self.hp = 0
+        self.origin_hp = 0
+        self.team = ''
+        self.shield = 0
+
+
+class championActive:
+    def __init__(self):
+        self.round = 0
+        # move, attack, dies
+        self.type = ''
+        # red, blue
+        self.round_team = ''
+        self.champion = champion_status()
+        self.attack_target = champion_status()
+        self.alive = {'red': 0, 'blue': 0}
+        self.timestamp = 0
+        self.id = 0
+
+
+class output:
+    def __init__(self):
+        self.json = {}
+        self.won_team = ''
+        self.actives: [championActive] = []
+
+
+
 def printt(msg):
     if config.PRINTMESSAGES:
         log.append(msg)
