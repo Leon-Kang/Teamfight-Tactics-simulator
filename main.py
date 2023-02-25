@@ -5,13 +5,8 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 
 import champion
+from ModelClass import InputModel
 from champion_functions import MILLIS
-
-
-class InputModel(BaseModel):
-    name: str
-    price: float
-    is_offer: Union[bool, None] = None
 
 
 test_json = {"blue": [{"name": "nami", "stars": "1", "items": [], "y": "3", "x": "4"},
