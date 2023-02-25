@@ -22,7 +22,7 @@ log = []
 
 
 class championStatus:
-    def __init__(self, name, stars, position, damage, hp, max_hp, team, shield, AD, items):
+    def __init__(self, name, stars, position, damage, hp, max_hp, team, c_shield, c_AD, c_items):
         self.stars = stars
         self.name = name
         self.position = position
@@ -31,13 +31,13 @@ class championStatus:
         self.hp = hp
         self.max_hp = max_hp
         self.team = team
-        self.shield = shield
-        self.AD = AD
-        self.items = items
+        self.shield = c_shield
+        self.AD = c_AD
+        self.items = c_items
 
 
 class championActive:
-    def __init__(self, active_type, round_team, status, target_stat, alive, action_id, AD):
+    def __init__(self, active_type, round_team, status, target_stat, alive, action_id):
         self.round = 0
         # move, attack, dies, mana
         self.type = active_type
@@ -46,7 +46,7 @@ class championActive:
         self.champion: championStatus = status
         self.attack_target: championStatus = target_stat
         self.alive = {'red': 0, 'blue': 0}
-        self.timestamp = datetime.datetime()
+        self.timestamp = datetime.datetime.now()
         self.id = action_id
 
 
