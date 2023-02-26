@@ -24,9 +24,11 @@ test_json = {"blue": [{"name": "nami", "stars": "1", "items": [], "y": "3", "x":
 app = FastAPI()
 
 
-def run(model: InputModel):
+def run_model(model: InputModel):
     print(model)
 
+
+def run():
     team_data = test_json
     iterations_data = 1
 
@@ -62,6 +64,10 @@ def run(model: InputModel):
     champion.test_multiple = {'blue': 0, 'red': 0, 'bugged out': 0, 'draw': 0}
 
 
-@app.put("/run/{json}")
+if __name__ == '__main__':
+    run()
+
+
+@app.put("/run/{test_id}")
 async def run_simulate(model: InputModel):
     return model

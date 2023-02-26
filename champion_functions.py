@@ -10,6 +10,7 @@ import item_stats
 import stats
 import origin_class
 import origin_class_stats
+from ModelClass import ChampionActive
 from stats import *
 
 MILLISECONDS = 0
@@ -272,8 +273,10 @@ def attack(champion, target, bonus_dmg=0, item_attack=False, trait_attack='', se
 def die(champion):
     enemy_team = champion.enemy_team()
     # mark everyone's target to be 'None' who targeted this champion
+    target = None
     for c in enemy_team:
         if c.target == champion:
+            target = c
             c.target = None
 
     if not champion.will_revive[0][0] and not champion.will_revive[1][0]:
@@ -283,6 +286,8 @@ def die(champion):
         # if(champion in champion.own_team()):
         champion.own_team().remove(champion)
         champion.print(' dies ')
+        die_action = ChampionActive('dies', champion.get_status())
+        champion.add_action(die_action)
 
         # zzrot_portal
         if 'zzrot_portal' in champion.items:

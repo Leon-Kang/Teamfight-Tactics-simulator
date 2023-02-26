@@ -1,5 +1,6 @@
 import datetime
 
+from ModelClass import Position, InputModel, ChampionActive, ChampionStatus
 from stats import AD, HEALTH, ARMOR, MR, AS, RANGE, MANA, MAXMANA, MANALOCK, ABILITY_REQUIRES_TARGET, DODGE, \
     SHIELD_LENGTH, INITIATIVE_ACTIVE, ABILITY_LENGTH
 from champion_functions import reset_stat, attack, die, MILLIS, MILLISECONDS_INCREASE, add_damage_dealt
@@ -10,7 +11,6 @@ import config
 import items
 import random
 import item_stats
-import stats
 import origin_class
 import origin_class_stats
 from math import ceil
@@ -21,46 +21,20 @@ que = []
 log = []
 
 
-class championStatus:
-    def __init__(self, name, stars, position, damage, hp, max_hp, team, c_shield, c_AD, c_items):
-        self.stars = stars
-        self.name = name
-        self.position = position
-        self.position_move = {'x': 0, 'y': 0}
-        self.damage = damage
-        self.hp = hp
-        self.max_hp = max_hp
-        self.team = team
-        self.shield = c_shield
-        self.AD = c_AD
-        self.items = c_items
-
-
-class championActive:
-    def __init__(self, active_type, round_team, status, target_stat, alive, action_id):
-        self.round = 0
-        # move, attack, dies, mana
-        self.type = active_type
-        # red, blue
-        self.round_team = round_team
-        self.champion: championStatus = status
-        self.attack_target: championStatus = target_stat
-        self.alive = {'red': 0, 'blue': 0}
-        self.timestamp = datetime.datetime.now()
-        self.id = action_id
-
-
-class output:
-    def __init__(self, won, actions, test_id, batch_battle_id, blue_lineups_num, red_lineups_num):
+class Output:
+    def __init__(self, won='', actions=None, test_id='',
+                 batch_battle_id=0, blue_lineups_num=0, red_lineups_num=0):
+        if actions is None:
+            actions = []
         self.test_id = test_id
         self.batch_battle_id = batch_battle_id
         self.blue_lineups_num = blue_lineups_num
         self.red_lineups_num = red_lineups_num
         self.won_team = won
-        self.actions: [championActive] = actions
+        self.actions: [ChampionActive] = actions
 
     def get_json(self):
-        return json.dumps(self.__dict__)
+        return json.dumps(self, default=lambda o: o.__dict__, sort_keys=True, indent=4)
 
 
 def printt(msg):
@@ -73,7 +47,8 @@ test_multiple = {
     'blue': 0, 'red': 0, 'bugged out': 0, 'draw': 0
 }
 
-# outputResult = output()
+global outputResult
+outputResult = Output()
 
 
 class champion:
@@ -190,6 +165,11 @@ class champion:
             self.AD = self.overlord.AD
             self.AS = self.overlord.AS
 
+    def get_status(self):
+        status = ChampionStatus(self.name, self.stars, {'x': self.x, 'y': self.y}, self.crit_damage, self.health,
+                                self.max_health, self.team, self.shields, self.AD, self.items)
+        return status
+
     def attack(self, bonus_dmg=0, target=None, item_attack=False, trait_attack='', set_AD=None):
         attackable_enemies = list(filter(lambda x: (x.champion and x.health > 0), self.enemy_team()))
         if target or self.target:
@@ -212,6 +192,10 @@ class champion:
                     ability.ashe_helper(self, {'target': target, 'bonus_dmg': bonus_dmg})
                 else:
                     attack(self, target, bonus_dmg, item_attack, trait_attack, set_AD)
+
+    def add_action(self, action):
+        outputResult.actions.append(action)
+        print(outputResult.get_json())
 
     def spell(self, target, dmg, true_dmg=0, item_damage=False, burn_damage=False, trait_damage=False):
         enemy_team = 'red' if self.team == 'blue' else 'blue'
@@ -525,12 +509,16 @@ blue = []
 red = []
 
 
-def run(champion, team_data):
+def run(champion, team_data, model: InputModel = None):
     reset_global_variables()
 
     # with open('team.json', 'r') as infile:
     data = team_data
-    daddy_coordinates = []
+    # daddy_coordinates = []
+    # outputResult.test_id = model.test_id
+    # outputResult.batch_battle_id = model.batch_battle_id
+    # outputResult.red_lineups_num = model.red_lineups_num
+    # outputResult.blue_lineups_num = model.blue_lineups_num
 
     for c in data['blue']:
         daddy_coordinates = False
@@ -574,9 +562,11 @@ def run(champion, team_data):
             break
         if MILLIS() > 0 and MILLIS() % origin_class_stats.length['elderwood'] == 0:
             origin_class.elderwood(blue, red)  # elderwood -trait
-        if MILLIS() > 0 and MILLIS() % origin_class_stats.threshold['hunter'][origin_class.get_origin_class_tier('blue', 'hunter')] == 0:
+        if MILLIS() > 0 and MILLIS() % origin_class_stats.threshold['hunter'][
+            origin_class.get_origin_class_tier('blue', 'hunter')] == 0:
             origin_class.hunter(blue)  # hunter -trait
-        if MILLIS() > 0 and MILLIS() % origin_class_stats.threshold['hunter'][origin_class.get_origin_class_tier('red', 'hunter')] == 0:
+        if MILLIS() > 0 and MILLIS() % origin_class_stats.threshold['hunter'][
+            origin_class.get_origin_class_tier('red', 'hunter')] == 0:
             origin_class.hunter(red)  # hunter -trait
 
         for b in blue:
@@ -655,7 +645,6 @@ def run(champion, team_data):
                 break
 
 
-
 def shield(champion, action, length, function, stat, value, data):
     shield_before = champion.shield_amount()
     if 'shield_before' in data and data['shield_before']:
@@ -667,7 +656,7 @@ def shield(champion, action, length, function, stat, value, data):
         # (remove the old one if still applier and give a new one)
         if 'expires' not in data:
             for s in champion.shields:
-                if s['original_amount'] == value['original_amount']\
+                if s['original_amount'] == value['original_amount'] \
                         and s['applier'] == value['applier']:
                     champion.shields.remove(s)
 

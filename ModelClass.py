@@ -1,6 +1,13 @@
 import json
+from datetime import datetime
 from typing import List
 from pydantic import BaseModel
+
+
+class Position:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
 
 
 # input
@@ -29,9 +36,6 @@ class InputModel(BaseModel):
     blue_teams: List[Team]
     red_teams: List[Team]
 
-    class Config:
-        allow_population_by_field_name = True
-
 
 # output
 class OutputTeam:
@@ -56,6 +60,7 @@ class BattleResult:
         self.red_lineups_num = red_lineups_num
         self.blue_teams = [OutputTeam(**t) for t in blue_teams]
         self.red_teams = [OutputTeam(**t) for t in red_teams]
+
 
 # Parse the JSON data
 
@@ -167,3 +172,33 @@ json_data = '''
 
 battle = BattleResult(**json.loads(json_data))
 
+
+class ChampionStatus:
+    def __init__(self, name, star, position, damage, hp, max_hp, team, c_shield, c_AD, c_items):
+        self.stars = star
+        self.name = name
+        self.position = position
+        self.position_move = {'x': 0, 'y': 0}
+        self.damage = damage
+        self.hp = hp
+        self.max_hp = max_hp
+        self.team = team
+        self.shield = c_shield
+        self.AD = c_AD
+        self.items = c_items
+
+
+class ChampionActive:
+    def __init__(self, active_type, status, target_stat=None, alive=None, action_id=0, round_team=0):
+        if alive is None:
+            alive = {'red': 0, 'blue': 0}
+        self.round = 0
+        # move, attack, dies, mana
+        self.type = active_type
+        # red, blue
+        self.round_team = round_team
+        self.champion: ChampionStatus = status
+        self.target: ChampionStatus = target_stat
+        self.alive = alive
+        self.timestamp = datetime.now().__str__()
+        self.id = action_id
