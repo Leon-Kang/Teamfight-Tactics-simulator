@@ -189,7 +189,7 @@ class ChampionStatus:
 
 
 class ChampionActive:
-    def __init__(self, active_type, status, target_stat=None, alive=None, action_id=0, round_team=0):
+    def __init__(self, active_type, status, target_stat=None, round_team='', damage=0, alive=None, action_id=0):
         if alive is None:
             alive = {'red': 0, 'blue': 0}
         self.round = 0
@@ -202,3 +202,26 @@ class ChampionActive:
         self.alive = alive
         self.timestamp = datetime.now().__str__()
         self.id = action_id
+        self.damage = damage
+
+class Output:
+    def __init__(self, won='', actions=None, test_id='',
+                 batch_battle_id=0, blue_lineups_num=0, red_lineups_num=0,
+                 origin_lineup=None, final_lineup=None):
+        if origin_lineup is None:
+            origin_lineup = []
+        if final_lineup is None:
+            final_lineup = []
+        if actions is None:
+            actions = []
+        self.test_id = test_id
+        self.batch_battle_id = batch_battle_id
+        self.blue_lineups_num = blue_lineups_num
+        self.red_lineups_num = red_lineups_num
+        self.won_team = won
+        self.actions: [ChampionActive] = actions
+        self.origin_lineup = [OutputTeam(**t) for t in origin_lineup]
+        self.final_lineup = [OutputTeam(**t) for t in final_lineup]
+
+    def get_json(self):
+        return json.dumps(self, default=lambda o: o.__dict__, sort_keys=True, indent=4)

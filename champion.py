@@ -1,6 +1,6 @@
 import datetime
 
-from ModelClass import Position, InputModel, ChampionActive, ChampionStatus
+from ModelClass import Position, InputModel, ChampionActive, ChampionStatus, Output
 from stats import AD, HEALTH, ARMOR, MR, AS, RANGE, MANA, MAXMANA, MANALOCK, ABILITY_REQUIRES_TARGET, DODGE, \
     SHIELD_LENGTH, INITIATIVE_ACTIVE, ABILITY_LENGTH
 from champion_functions import reset_stat, attack, die, MILLIS, MILLISECONDS_INCREASE, add_damage_dealt
@@ -19,22 +19,6 @@ import champion_functions
 
 que = []
 log = []
-
-
-class Output:
-    def __init__(self, won='', actions=None, test_id='',
-                 batch_battle_id=0, blue_lineups_num=0, red_lineups_num=0):
-        if actions is None:
-            actions = []
-        self.test_id = test_id
-        self.batch_battle_id = batch_battle_id
-        self.blue_lineups_num = blue_lineups_num
-        self.red_lineups_num = red_lineups_num
-        self.won_team = won
-        self.actions: [ChampionActive] = actions
-
-    def get_json(self):
-        return json.dumps(self, default=lambda o: o.__dict__, sort_keys=True, indent=4)
 
 
 def printt(msg):
@@ -194,8 +178,11 @@ class champion:
                     attack(self, target, bonus_dmg, item_attack, trait_attack, set_AD)
 
     def add_action(self, action):
+        blue_len = len(blue)
+        red_len = len(red)
+        alive = {'blue': blue_len, 'red': red_len}
+        action.alive = alive
         outputResult.actions.append(action)
-        print(outputResult.get_json())
 
     def spell(self, target, dmg, true_dmg=0, item_damage=False, burn_damage=False, trait_damage=False):
         enemy_team = 'red' if self.team == 'blue' else 'blue'
@@ -315,6 +302,9 @@ class champion:
                                                                                     burn_string,
                                                                                     item_string,
                                                                                     trait_string))
+                action = ChampionActive('deals', self.get_status(), target.get_status(), damage=damage, round_team=self.team)
+                self.add_action(action)
+
                 target.health -= damage
                 if MILLIS() > target.castMS + target.manalock \
                         and not target.ability_active and target.maxmana > 0:
@@ -323,6 +313,7 @@ class champion:
                         target.mana += min((damage * config.MANA_DAMAGE_GAIN) * target.mana_generation,
                                            config.MAX_MANA_FROM_DAMAGE)
                         target.print(' mana {} --> {}'.format(round(old_mana, 1), round(target.mana, 1)))
+                        action = ChampionActive('mana', self.get_status())
 
                 # titans_resolve -item
                 # add bonus damage and armors after the values have been used.
@@ -640,8 +631,12 @@ def run(champion, team_data, model: InputModel = None):
             if len(blue) == 0 or len(red) == 0:
                 if len(blue) == 0:
                     printt('RED TEAM WON')
+                    outputResult.won_team = 'red'
+                    print(outputResult.get_json())
                 else:
                     printt('BLUE TEAM WON')
+                    outputResult.won_team = 'blue'
+                    print(outputResult.get_json())
                 break
 
 
