@@ -622,7 +622,8 @@ def run(champion, team_data, model: InputModel = None):
 
                 if que[0][0] == 'kill':
                     que[0][5].die()
-            que.pop(0)
+            if len(que):
+                que.pop(0)
         MILLISECONDS_INCREASE()
         if blue_len != len(blue) or red_len != len(red):
             printt('blue: ' + str(len(blue)) + '/' + 'red: ' + str(len(red)))
