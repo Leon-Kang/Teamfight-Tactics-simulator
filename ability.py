@@ -23,6 +23,9 @@ from math import ceil, floor
 # For some ults there's an image named 'champion.name_ult.png' which gives some idea about what's going on
 # The pics are pretty shit and were made just for my own good but decided to include them anyway
 
+def keep_legit_coord(coords):
+    return list(filter(lambda x: max(x) < 8 and min(x) > -1, coords))
+
 def default_ability_calls(champion):
     if (not champion.target): field.find_target(champion)
     if (not (champion.name == 'galio' and champion.stars == 1)):
@@ -2010,7 +2013,8 @@ def sylas(champion):
     smash_line.append(sylas_ability(champion, {'hexes': primary_neighbors, 'distance': 3}))
 
     coords = field.coordinates
-    for s in smash_line:
+    for s in keep_legit_coord(smash_line):
+        print(s)
         c = coords[s[0]][s[1]]
         if (c and c.team != champion.team and c.champion):
 
