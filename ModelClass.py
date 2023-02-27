@@ -4,8 +4,12 @@ from typing import List
 from pydantic import BaseModel
 
 
-class Position:
-    def __init__(self, x, y):
+class Position(BaseModel):
+    x: int
+    y: int
+
+    def __init__(self, x, y, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.x = x
         self.y = y
 
@@ -13,7 +17,7 @@ class Position:
 # input
 class Champion(BaseModel):
     champion: str
-    position: str
+    position: Position
     star: int
     items: List[str]
 
@@ -204,12 +208,15 @@ class ChampionActive:
         self.id = action_id
         self.damage = damage
 
+
 class Output:
     def __init__(self, won='', actions=None, test_id='',
                  batch_battle_id=0, blue_lineups_num=0, red_lineups_num=0,
-                 origin_lineup=None, final_lineup=None):
-        if origin_lineup is None:
-            origin_lineup = []
+                 origin_red=None, origin_blue=None, final_lineup=None):
+        if origin_red is None:
+            origin_red = []
+        if origin_blue is None:
+            origin_blue = []
         if final_lineup is None:
             final_lineup = []
         if actions is None:
@@ -220,7 +227,8 @@ class Output:
         self.red_lineups_num = red_lineups_num
         self.won_team = won
         self.actions: [ChampionActive] = actions
-        self.origin_lineup = [OutputTeam(**t) for t in origin_lineup]
+        self.origin_red = [OutputTeam(**t) for t in origin_red]
+        self.origin_blue = [OutputTeam(**t) for t in origin_blue]
         self.final_lineup = [OutputTeam(**t) for t in final_lineup]
 
     def get_json(self):

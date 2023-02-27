@@ -505,11 +505,25 @@ def run(champion, team_data, model: InputModel = None):
 
     # with open('team.json', 'r') as infile:
     data = team_data
-    # daddy_coordinates = []
-    # outputResult.test_id = model.test_id
-    # outputResult.batch_battle_id = model.batch_battle_id
-    # outputResult.red_lineups_num = model.red_lineups_num
-    # outputResult.blue_lineups_num = model.blue_lineups_num
+    if data is None and model is not None:
+        blue_teams = []
+        for t in model.blue_teams[0].lineups[0].champions:
+            team = {'name': t.champion, 'stars': t.star, 'items': t.items, 'y': t.position.y, 'x': t.position.x}
+            blue_teams.append(team)
+        red_teams = []
+        for t in model.red_teams[0].lineups[0].champions:
+            team = {'name': t.champion, 'stars': t.star, 'items': t.items, 'y': t.position.y, 'x': t.position.x}
+            red_teams.append(team)
+        data = {'blue': blue_teams, 'red': red_teams}
+    daddy_coordinates = []
+
+    if model is not None:
+        outputResult.test_id = model.test_id
+        outputResult.batch_battle_id = model.batch_battle_id
+        outputResult.red_lineups_num = model.red_lineups_num
+        outputResult.blue_lineups_num = model.blue_lineups_num
+        outputResult.origin_red = model.red_teams
+        outputResult.origin_blue = model.blue_teams
 
     for c in data['blue']:
         daddy_coordinates = False

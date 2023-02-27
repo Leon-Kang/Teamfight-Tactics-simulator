@@ -70,4 +70,5 @@ if __name__ == '__main__':
 
 @app.put("/run/{test_id}")
 async def run_simulate(model: InputModel):
+    run_model(model)
     return model
