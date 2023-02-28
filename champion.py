@@ -1,6 +1,6 @@
 import datetime
 
-from ModelClass import Position, InputModel, ChampionActive, ChampionStatus, Output
+from ModelClass import Position, InputModel, ChampionActive, ChampionStatus, Output, OutputChampion, PositionClass
 from stats import AD, HEALTH, ARMOR, MR, AS, RANGE, MANA, MAXMANA, MANALOCK, ABILITY_REQUIRES_TARGET, DODGE, \
     SHIELD_LENGTH, INITIATIVE_ACTIVE, ABILITY_LENGTH
 from champion_functions import reset_stat, attack, die, MILLIS, MILLISECONDS_INCREASE, add_damage_dealt
@@ -186,7 +186,7 @@ class champion:
         red_len = len(red)
         alive = {'blue': blue_len, 'red': red_len}
         action.alive = alive
-        outputResult.actions.append(action)
+        # outputResult.actions.append(action)
 
     def spell(self, target, dmg, true_dmg=0, item_damage=False, burn_damage=False, trait_damage=False):
         enemy_team = 'red' if self.team == 'blue' else 'blue'
@@ -517,8 +517,6 @@ def run(champion, team_data, model: InputModel = None):
         outputResult.batch_battle_id = model.batch_battle_id
         outputResult.red_lineups_num = model.red_lineups_num
         outputResult.blue_lineups_num = model.blue_lineups_num
-        outputResult.origin_red = model.red_teams
-        outputResult.origin_blue = model.blue_teams
 
     for c in data['blue']:
         daddy_coordinates = False
@@ -528,6 +526,7 @@ def run(champion, team_data, model: InputModel = None):
         champion_cur = champion(c['name'], int(c['stars']),
                                 'blue', int(c['y']), int(c['x']), c['items'], False)
         blue.append(champion_cur)
+        outputResult.origin_blue.append(champion_cur.get_status())
     for c in data['red']:
         daddy_coordinates = False
         if c['name'] == 'sandguard':
@@ -536,6 +535,7 @@ def run(champion, team_data, model: InputModel = None):
         champion_cur = champion(c['name'], int(c['stars']),
                                 'red', int(c['y']), int(c['x']), c['items'], False)
         red.append(champion_cur)
+        outputResult.origin_red.append(champion_cur.get_status())
 
     items.chalice_of_power(blue[0])  # chalice_of_power
     items.zekes_herald(blue[0])  # chalice_of_power
@@ -642,11 +642,20 @@ def run(champion, team_data, model: InputModel = None):
                 if len(blue) == 0:
                     printt('RED TEAM WON')
                     outputResult.won_team = 'red'
-                    print(outputResult.get_json())
+                    for c in red:
+                        r_champion = c.get_status()
+                        outputResult.final_lineup.append(r_champion)
                 else:
                     printt('BLUE TEAM WON')
                     outputResult.won_team = 'blue'
-                    print(outputResult.get_json())
+                    for c in blue:
+                        r_champion = c.get_status()
+                        outputResult.final_lineup.append(r_champion)
+                blue_len = len(blue)
+                red_len = len(red)
+                alive = {'blue': blue_len, 'red': red_len}
+                outputResult.alive = alive
+                print(outputResult.get_json())
                 break
 
 
@@ -736,10 +745,12 @@ def reset_global_variables():
     global red
     global que
     global log
+    global outputResult
     blue = []
     red = []
     que = []
     log = []
+    outputResult = Output()
 
     champion_functions.MILLISECONDS = 0
     champion_functions.damage_dealt = []

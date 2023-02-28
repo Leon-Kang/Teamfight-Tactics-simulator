@@ -38,10 +38,16 @@ class OutputTeam:
         self.champions = [OutputChampion(**c) for c in champions]
 
 
+class PositionClass:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+
+
 class OutputChampion:
     def __init__(self, champion, position, star, items):
         self.champion = champion
-        self.position = position
+        self.position: PositionClass = position
         self.star = star
         self.items = items
 
@@ -172,7 +178,7 @@ class ChampionStatus:
         self.stars = star
         self.name = name
         self.position = position
-        self.position_move = {'x': 0, 'y': 0}
+        # self.position_move = {'x': 0, 'y': 0}
         self.damage = damage
         self.hp = hp
         self.max_hp = max_hp
