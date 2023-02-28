@@ -174,17 +174,15 @@ battle = BattleResult(**json.loads(json_data))
 
 
 class ChampionStatus:
-    def __init__(self, name, star, position, damage, hp, max_hp, team, c_shield, c_AD, c_items):
+    def __init__(self, name, star, position, hp, max_hp, team, c_shield, c_items):
         self.stars = star
         self.name = name
         self.position = position
         # self.position_move = {'x': 0, 'y': 0}
-        self.damage = damage
         self.hp = hp
         self.max_hp = max_hp
         self.team = team
         self.shield = c_shield
-        self.AD = c_AD
         self.items = c_items
 
 
