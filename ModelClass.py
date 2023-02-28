@@ -224,6 +224,9 @@ class Output:
         self.origin_red = [OutputTeam(**t) for t in origin_red]
         self.origin_blue = [OutputTeam(**t) for t in origin_blue]
         self.final_lineup = [OutputTeam(**t) for t in final_lineup]
+        self.millis = 0
+        self.startTime = datetime.now().__str__()
+        self.endTime = datetime.now().__str__()
 
     def get_json(self):
         return json.dumps(self, default=lambda o: o.__dict__, sort_keys=True, indent=4)

@@ -655,6 +655,8 @@ def run(champion, team_data, model: InputModel = None):
                 red_len = len(red)
                 alive = {'blue': blue_len, 'red': red_len}
                 outputResult.alive = alive
+                outputResult.millis = MILLIS()
+                outputResult.endTime = datetime.datetime.now().__str__()
                 print(outputResult.get_json())
                 break
 
