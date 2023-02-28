@@ -505,16 +505,7 @@ def run(champion, team_data, model: InputModel = None):
 
     # with open('team.json', 'r') as infile:
     data = team_data
-    if data is None and model is not None:
-        blue_teams = []
-        for t in model.blue_teams[0].lineups[0].champions:
-            team = {'name': t.champion, 'stars': t.star, 'items': t.items, 'y': t.position.y, 'x': t.position.x}
-            blue_teams.append(team)
-        red_teams = []
-        for t in model.red_teams[0].lineups[0].champions:
-            team = {'name': t.champion, 'stars': t.star, 'items': t.items, 'y': t.position.y, 'x': t.position.x}
-            red_teams.append(team)
-        data = {'blue': blue_teams, 'red': red_teams}
+
     daddy_coordinates = []
 
     if model is not None:

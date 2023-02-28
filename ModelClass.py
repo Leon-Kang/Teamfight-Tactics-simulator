@@ -8,11 +8,6 @@ class Position(BaseModel):
     x: int
     y: int
 
-    def __init__(self, x, y, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.x = x
-        self.y = y
-
 
 # input
 class Champion(BaseModel):
@@ -27,18 +22,13 @@ class Lineup(BaseModel):
     champions: List[Champion]
 
 
-class Team(BaseModel):
-    team_id: int
-    lineups: List[Lineup]
-
-
 class InputModel(BaseModel):
     test_id: int
     batch_battle_id: int
     blue_lineups_num: int
     red_lineups_num: int
-    blue_teams: List[Team]
-    red_teams: List[Team]
+    blue_teams: List[Lineup]
+    red_teams: List[Lineup]
 
 
 # output

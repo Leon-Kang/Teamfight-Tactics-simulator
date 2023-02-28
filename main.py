@@ -25,6 +25,17 @@ app = FastAPI()
 
 
 def run_model(model: InputModel):
+    blue_teams = []
+    for t in model.blue_teams[0].champions:
+        team = {'name': t.champion, 'stars': int(t.star), 'items': t.items, 'y': t.position.y, 'x': t.position.x}
+        blue_teams.append(team)
+    red_teams = []
+    for t in model.red_teams[0].champions:
+        team = {'name': t.champion, 'stars': int(t.star), 'items': t.items, 'y': t.position.y, 'x': t.position.x}
+        red_teams.append(team)
+    team_data = {'blue': blue_teams, 'red': red_teams}
+    print(team_data)
+    champion.run(champion.champion, team_data)
     print(model)
 
 

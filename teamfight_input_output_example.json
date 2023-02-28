@@ -1,4 +1,3 @@
-
 {
   "test_id": 111233,
   "batch_battle_id": 11111111,
@@ -9,22 +8,22 @@
       "lineup_id": 123,
       "champions": [
         {
-          "champion": "A",
-          "position": "(4,2)",
+          "champion": "sylas",
+          "position": {
+            "x": "4",
+            "y": "2"
+          },
           "star": 1,
-          "items": [
-            "item1",
-            "item2",
-            "item3"
-          ]
+          "items": []
         },
         {
-          "champion": "B",
-          "position": "(2,3)",
+          "champion": "vayne",
+          "position": {
+            "x": "2",
+            "y": "3"
+          },
           "star": 1,
-          "items": [
-            "item1"
-          ]
+          "items": []
         }
       ]
     },
@@ -32,47 +31,47 @@
       "lineup_id": 124,
       "champions": [
         {
-          "champion": "A",
-          "position": "(4,2)",
+          "champion": "garen",
+          "position": {
+            "x": "4",
+            "y": "2"
+          },
           "star": 1,
-          "items": [
-            "item1",
-            "item2",
-            "item3"
-          ]
+          "items": []
         },
         {
-          "champion": "B",
-          "position": "(2,3)",
+          "champion": "vi",
+          "position": {
+            "x": "2",
+            "y": "3"
+          },
           "star": 1,
-          "items": [
-            "item1"
-          ]
+          "items": []
         }
       ]
     }
   ],
-  "red_team": [
+  "red_teams": [
     {
       "lineup_id": 222,
       "champions": [
         {
-          "champion": "A",
-          "position": "(4,2)",
+          "champion": "aatrox",
+          "position": {
+            "x": "4",
+            "y": "2"
+          },
           "star": 1,
-          "items": [
-            "item1",
-            "item2",
-            "item3"
-          ]
+          "items": []
         },
         {
-          "champion": "B",
-          "position": "(2,3)",
+          "champion": "fiora",
+          "position": {
+            "x": "3",
+            "y": "3"
+          },
           "star": 1,
-          "items": [
-            "item1"
-          ]
+          "items": []
         }
       ]
     },
@@ -80,28 +79,27 @@
       "lineup_id": 333,
       "champions": [
         {
-          "champion": "A",
-          "position": "(4,2)",
+          "champion": "veigar",
+          "position": {
+            "x": "4",
+            "y": "2"
+          },
           "star": 1,
-          "items": [
-            "item1",
-            "item2",
-            "item3"
-          ]
+          "items": []
         },
         {
-          "champion": "B",
-          "position": "(2,3)",
+          "champion": "aatrox",
+          "position": {
+            "x": "3",
+            "y": "2"
+          },
           "star": 1,
-          "items": [
-            "item1"
-          ]
+          "items": []
         }
       ]
     }
   ]
 }
-
 
 {
   "test_id": 111233,
