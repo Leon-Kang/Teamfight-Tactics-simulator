@@ -9,7 +9,6 @@ import champion
 from ModelClass import InputModel
 from champion_functions import MILLIS
 
-
 test_json = {"blue": [{"name": "aatrox", "stars": "1", "items": [], "y": "3", "x": "4"},
                       {"name": "fiora", "stars": "1", "items": [], "y": "2", "x": "1"},
                       {"name": "veigar", "stars": "1", "items": [], "y": "2", "x": "2"},
@@ -21,23 +20,29 @@ test_json = {"blue": [{"name": "aatrox", "stars": "1", "items": [], "y": "3", "x
                      {"name": "vi", "stars": "1", "items": [], "y": "5", "x": "4"},
                      {"name": "warwick", "stars": "1", "items": [], "y": "5", "x": "5"}]}
 
-
 app = FastAPI()
 
 
 def run_model(model: InputModel):
-    blue_teams = []
-    for t in model.blue_teams[0].champions:
-        team = {'name': t.champion, 'stars': int(t.star), 'items': t.items, 'y': t.position.y, 'x': t.position.x}
-        blue_teams.append(team)
-    red_teams = []
-    for t in model.red_teams[0].champions:
-        team = {'name': t.champion, 'stars': int(t.star), 'items': t.items, 'y': t.position.y, 'x': t.position.x}
-        red_teams.append(team)
-    team_data = {'blue': blue_teams, 'red': red_teams}
-    print(team_data)
-    champion.run(champion.champion, team_data, model)
-    return champion.get_result()
+    result = {}
+    data = []
+    for b_team in model.blue_teams:
+        blue_teams = []
+        for t in b_team.champions:
+            team = {'name': t.champion, 'stars': int(t.star), 'items': t.items, 'y': t.position.y, 'x': t.position.x}
+            blue_teams.append(team)
+        for r_team in model.red_teams:
+            red_teams = []
+            for r in r_team.champions:
+                r_champion = {'name': r.champion, 'stars': int(r.star), 'items': r.items, 'y': r.position.y,
+                              'x': r.position.x}
+                red_teams.append(r_champion)
+            team_data = {'blue': blue_teams, 'red': red_teams}
+            print(team_data)
+            champion.run(champion.champion, team_data, model)
+            data.append(champion.get_result())
+    result['data'] = data
+    return result
 
 
 def run():

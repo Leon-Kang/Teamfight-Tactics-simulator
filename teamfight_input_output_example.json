@@ -10,7 +10,7 @@
         {
           "champion": "sylas",
           "position": {
-            "x": "4",
+            "x": "3",
             "y": "2"
           },
           "star": 1,
@@ -59,7 +59,7 @@
           "champion": "aatrox",
           "position": {
             "x": "4",
-            "y": "2"
+            "y": "5"
           },
           "star": 1,
           "items": []
@@ -68,7 +68,7 @@
           "champion": "fiora",
           "position": {
             "x": "3",
-            "y": "3"
+            "y": "6"
           },
           "star": 1,
           "items": []
@@ -91,7 +91,7 @@
           "champion": "aatrox",
           "position": {
             "x": "3",
-            "y": "2"
+            "y": "7"
           },
           "star": 1,
           "items": []
