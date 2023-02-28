@@ -1,3 +1,4 @@
+import json
 import multiprocessing
 
 from typing import Union
@@ -35,8 +36,8 @@ def run_model(model: InputModel):
         red_teams.append(team)
     team_data = {'blue': blue_teams, 'red': red_teams}
     print(team_data)
-    champion.run(champion.champion, team_data)
-    print(model)
+    champion.run(champion.champion, team_data, model)
+    return champion.get_result()
 
 
 def run():
@@ -81,5 +82,5 @@ if __name__ == '__main__':
 
 @app.put("/run/{test_id}")
 async def run_simulate(model: InputModel):
-    run_model(model)
-    return model
+    result = run_model(model)
+    return result

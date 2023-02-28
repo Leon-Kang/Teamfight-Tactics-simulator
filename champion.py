@@ -35,6 +35,10 @@ global outputResult
 outputResult = Output()
 
 
+def get_result():
+    return outputResult.get_json()
+
+
 class champion:
     def __init__(self, name, stars, team, y, x, itemlist=[],
                  overlord=None, sandguard_overlord_coordinates=None, chosen=False):
