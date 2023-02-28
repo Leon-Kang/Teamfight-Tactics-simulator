@@ -154,8 +154,8 @@ class champion:
             self.AS = self.overlord.AS
 
     def get_status(self):
-        status = ChampionStatus(self.name, self.stars, {'x': self.x, 'y': self.y}, self.crit_damage, self.health,
-                                self.max_health, self.team, self.shields, self.AD, self.items)
+        status = ChampionStatus(self.name, self.stars, {'x': self.x, 'y': self.y}, self.health,
+                                self.max_health, self.team, self.shields, self.items)
         return status
 
     def attack(self, bonus_dmg=0, target=None, item_attack=False, trait_attack='', set_AD=None):
