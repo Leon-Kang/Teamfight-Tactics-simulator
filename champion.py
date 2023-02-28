@@ -504,7 +504,7 @@ blue = []
 red = []
 
 
-def run(champion, team_data, model: InputModel = None):
+def run(champion, team_data, model: InputModel = None, red_id='', blue_id=''):
     reset_global_variables()
 
     # with open('team.json', 'r') as infile:
@@ -515,8 +515,6 @@ def run(champion, team_data, model: InputModel = None):
     if model is not None:
         outputResult.test_id = model.test_id
         outputResult.batch_battle_id = model.batch_battle_id
-        outputResult.red_lineups_num = model.red_lineups_num
-        outputResult.blue_lineups_num = model.blue_lineups_num
 
     for c in data['blue']:
         daddy_coordinates = False
@@ -656,7 +654,8 @@ def run(champion, team_data, model: InputModel = None):
                 alive = {'blue': blue_len, 'red': red_len}
                 outputResult.alive = alive
                 outputResult.millis = MILLIS()
-                outputResult.endTime = datetime.datetime.now().__str__()
+                outputResult.endTime = datetime.datetime.now().timestamp().__str__()
+                outputResult.match_id = f'{model.batch_battle_id}-{model.test_id}-{blue_id}-{red_id}-{outputResult.endTime}'
                 print(outputResult.get_json())
                 break
 

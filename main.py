@@ -39,7 +39,7 @@ def run_model(model: InputModel):
                 red_teams.append(r_champion)
             team_data = {'blue': blue_teams, 'red': red_teams}
             print(team_data)
-            champion.run(champion.champion, team_data, model)
+            champion.run(champion.champion, team_data, model, r_team.lineup_id, b_team.lineup_id)
             data.append(champion.get_result())
     result['data'] = data
     return result

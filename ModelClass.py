@@ -205,8 +205,7 @@ class ChampionActive:
 
 class Output:
     def __init__(self, won='', actions=None, test_id='',
-                 batch_battle_id=0, blue_lineups_num=0, red_lineups_num=0,
-                 origin_red=None, origin_blue=None, final_lineup=None):
+                 batch_battle_id=0, origin_red=None, origin_blue=None, final_lineup=None):
         if origin_red is None:
             origin_red = []
         if origin_blue is None:
@@ -217,16 +216,15 @@ class Output:
             actions = []
         self.test_id = test_id
         self.batch_battle_id = batch_battle_id
-        self.blue_lineups_num = blue_lineups_num
-        self.red_lineups_num = red_lineups_num
         self.won_team = won
         self.actions: [ChampionActive] = actions
         self.origin_red = [OutputTeam(**t) for t in origin_red]
         self.origin_blue = [OutputTeam(**t) for t in origin_blue]
         self.final_lineup = [OutputTeam(**t) for t in final_lineup]
         self.millis = 0
-        self.startTime = datetime.now().__str__()
-        self.endTime = datetime.now().__str__()
+        self.startTime = datetime.now().timestamp().__str__()
+        self.endTime = datetime.now().timestamp().__str__()
+        self.match_id = ''
 
     def get_json(self):
         return json.dumps(self, default=lambda o: o.__dict__, sort_keys=True, indent=4)
