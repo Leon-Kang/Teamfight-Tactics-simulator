@@ -1,9 +1,10 @@
 import json
-import multiprocessing
+import multiprocessing as mp
 
 from typing import Union
 from fastapi import FastAPI
 from pydantic import BaseModel
+import numpy as np
 
 import champion
 from ModelClass import InputModel
@@ -26,7 +27,20 @@ app = FastAPI()
 def run_model(model: InputModel):
     result = {}
     data = []
-    for b_team in model.blue_teams:
+    blue_teams = model.blue_teams
+    count = len(blue_teams)
+    tasks_count = 5
+    tasks = np.array_split(blue_teams, tasks_count)
+    pool = mp.Pool(tasks_count)
+    tasks_pool = [pool.apply_async(blue_fight, args=(teams, model)) for teams in tasks]
+    data = [p.get() for p in tasks_pool]
+    result['data'] = data
+    return result
+
+
+def blue_fight(blue_teams: [], model: InputModel):
+    data = []
+    for b_team in blue_teams:
         blue_teams = []
         for t in b_team.champions:
             team = {'name': t.champion, 'stars': int(t.star), 'items': t.items, 'y': t.position.y, 'x': t.position.x}
@@ -41,8 +55,8 @@ def run_model(model: InputModel):
             print(team_data)
             champion.run(champion.champion, team_data, model, r_team.lineup_id, b_team.lineup_id)
             data.append(champion.get_result())
-    result['data'] = data
-    return result
+
+    return data
 
 
 def run():
