@@ -55,7 +55,6 @@ def blue_fight(blue_teams: [], model: InputModel):
             print(team_data)
             champion.run(champion.champion, team_data, model, r_team.lineup_id, b_team.lineup_id)
             data.append(champion.get_result())
-
     return data
 
 
