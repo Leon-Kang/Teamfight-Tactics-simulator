@@ -212,12 +212,12 @@ class Output:
             origin_blue = []
         if final_lineup is None:
             final_lineup = []
-        if actions is None:
-            actions = []
+        # if actions is None:
+        #     actions = []
         self.test_id = test_id
         self.batch_battle_id = batch_battle_id
         self.won_team = won
-        self.actions: [ChampionActive] = actions
+        # self.actions: [ChampionActive] = actions
         self.origin_red = [OutputTeam(**t) for t in origin_red]
         self.origin_blue = [OutputTeam(**t) for t in origin_blue]
         self.final_lineup = [OutputTeam(**t) for t in final_lineup]

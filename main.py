@@ -29,12 +29,14 @@ def run_model(model: InputModel):
     data = []
     blue_teams = model.blue_teams
     count = len(blue_teams)
-    tasks_count = 5
+    tasks_count = min(count, 5)
     tasks = np.array_split(blue_teams, tasks_count)
     pool = mp.Pool(tasks_count)
     tasks_pool = [pool.apply_async(blue_fight, args=(teams, model)) for teams in tasks]
     data = [p.get() for p in tasks_pool]
-    result['data'] = data
+    arr = np.array(data)
+    arr.reshape(-1)
+    result['data'] = arr
     return result
 
 
@@ -55,7 +57,8 @@ def blue_fight(blue_teams: [], model: InputModel):
             print(team_data)
             champion.run(champion.champion, team_data, model, r_team.lineup_id, b_team.lineup_id)
             data.append(champion.get_result())
-    return data
+    if len(data) != 0:
+        return data
 
 
 def run():
