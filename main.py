@@ -10,16 +10,7 @@ import champion
 from ModelClass import InputModel
 from champion_functions import MILLIS
 
-test_json = {"blue": [{"name": "aatrox", "stars": "1", "items": [], "y": "3", "x": "4"},
-                      {"name": "fiora", "stars": "1", "items": [], "y": "2", "x": "1"},
-                      {"name": "veigar", "stars": "1", "items": [], "y": "2", "x": "2"},
-                      {"name": "zed", "stars": "1", "items": [], "y": "2", "x": "4"},
-                      {"name": "akali", "stars": "1", "items": [], "y": "1", "x": "3"}],
-             "red": [{"name": "sylas", "stars": "1", "items": [], "y": "7", "x": "2"},
-                     {"name": "vayne", "stars": "1", "items": [], "y": "6", "x": "2"},
-                     {"name": "garen", "stars": "1", "items": [], "y": "6", "x": "3"},
-                     {"name": "vi", "stars": "1", "items": [], "y": "5", "x": "4"},
-                     {"name": "warwick", "stars": "1", "items": [], "y": "5", "x": "5"}]}
+test_json = {'blue': [{'name': 'pyke', 'stars': 1, 'items': [], 'y': 3, 'x': 2}, {'name': 'wukong', 'stars': 1, 'items': [], 'y': 3, 'x': 3}, {'name': 'lissandra', 'stars': 1, 'items': [], 'y': 1, 'x': 2}, {'name': 'warwick', 'stars': 1, 'items': [], 'y': 1, 'x': 3}, {'name': 'irelia', 'stars': 1, 'items': [], 'y': 1, 'x': 4}], 'red': [{'name': 'tahmkench', 'stars': 1, 'items': [], 'y': 6, 'x': 2}, {'name': 'sylas', 'stars': 1, 'items': [], 'y': 6, 'x': 3}, {'name': 'cassiopeia', 'stars': 1, 'items': [], 'y': 6, 'x': 4}, {'name': 'construct', 'stars': 1, 'items': [], 'y': 4, 'x': 2}, {'name': 'jarvaniv', 'stars': 1, 'items': [], 'y': 4, 'x': 3}]}
 
 app = FastAPI()
 
@@ -55,8 +46,12 @@ def blue_fight(blue_teams: [], model: InputModel):
                 red_teams.append(r_champion)
             team_data = {'blue': blue_teams, 'red': red_teams}
             print(team_data)
-            champion.run(champion.champion, team_data, model, r_team.lineup_id, b_team.lineup_id)
-            data.append(champion.get_result())
+            try:
+                champion.run(champion.champion, team_data, model, r_team.lineup_id, b_team.lineup_id)
+                data.append(champion.get_result())
+            except Exception as e:
+                print(e)
+
     return data
 
 
@@ -80,18 +75,18 @@ def run():
             #     print(e)
             #     champion.test_multiple['bugged out'] += 1
 
-            with open(filename + '.txt', 'a') as out:
-                if MILLIS() < 75000:
-                    if champion.log[-1] == 'BLUE TEAM WON':
-                        champion.test_multiple['blue'] += 1
-                    if champion.log[-1] == 'RED TEAM WON':
-                        champion.test_multiple['red'] += 1
-                elif MILLIS() < 200000:
-                    champion.test_multiple['draw'] += 1
-                for line in champion.log:
-                    out.write(str(line))
-                    out.write('\n')
-            out.close()
+            # with open(filename + '.txt', 'a') as out:
+            #     if MILLIS() < 75000:
+            #         if champion.log[-1] == 'BLUE TEAM WON':
+            #             champion.test_multiple['blue'] += 1
+            #         if champion.log[-1] == 'RED TEAM WON':
+            #             champion.test_multiple['red'] += 1
+            #     elif MILLIS() < 200000:
+            #         champion.test_multiple['draw'] += 1
+            #     for line in champion.log:
+            #         out.write(str(line))
+            #         out.write('\n')
+            # out.close()
 
     champion.test_multiple = {'blue': 0, 'red': 0, 'bugged out': 0, 'draw': 0}
 
