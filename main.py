@@ -1,5 +1,6 @@
 import json
 import multiprocessing as mp
+import os
 
 from typing import Union
 from fastapi import FastAPI
@@ -10,9 +11,21 @@ import champion
 from ModelClass import InputModel
 from champion_functions import MILLIS
 
-test_json = {'blue': [{'name': 'pyke', 'stars': 1, 'items': [], 'y': 3, 'x': 2}, {'name': 'wukong', 'stars': 1, 'items': [], 'y': 3, 'x': 3}, {'name': 'lissandra', 'stars': 1, 'items': [], 'y': 1, 'x': 2}, {'name': 'warwick', 'stars': 1, 'items': [], 'y': 1, 'x': 3}, {'name': 'irelia', 'stars': 1, 'items': [], 'y': 1, 'x': 4}], 'red': [{'name': 'tahmkench', 'stars': 1, 'items': [], 'y': 6, 'x': 2}, {'name': 'sylas', 'stars': 1, 'items': [], 'y': 6, 'x': 3}, {'name': 'cassiopeia', 'stars': 1, 'items': [], 'y': 6, 'x': 4}, {'name': 'construct', 'stars': 1, 'items': [], 'y': 4, 'x': 2}, {'name': 'jarvaniv', 'stars': 1, 'items': [], 'y': 4, 'x': 3}]}
+test_json = {'blue': [{'name': 'pyke', 'stars': 1, 'items': [], 'y': 3, 'x': 2},
+                      {'name': 'wukong', 'stars': 1, 'items': [], 'y': 3, 'x': 3},
+                      {'name': 'lissandra', 'stars': 1, 'items': [], 'y': 1, 'x': 2},
+                      {'name': 'warwick', 'stars': 1, 'items': [], 'y': 1, 'x': 3},
+                      {'name': 'irelia', 'stars': 1, 'items': [], 'y': 1, 'x': 4}],
+             'red': [{'name': 'tahmkench', 'stars': 1, 'items': [], 'y': 6, 'x': 2},
+                     {'name': 'sylas', 'stars': 1, 'items': [], 'y': 6, 'x': 3},
+                     {'name': 'cassiopeia', 'stars': 1, 'items': [], 'y': 6, 'x': 4},
+                     {'name': 'construct', 'stars': 1, 'items': [], 'y': 4, 'x': 2},
+                     {'name': 'jarvaniv', 'stars': 1, 'items': [], 'y': 4, 'x': 3}]}
 
 app = FastAPI()
+
+cwd = os.getcwd()
+output = 'output'
 
 
 def run_model(model: InputModel):
@@ -48,11 +61,23 @@ def blue_fight(blue_teams: [], model: InputModel):
             print(team_data)
             try:
                 champion.run(champion.champion, team_data, model, r_team.lineup_id, b_team.lineup_id)
-                data.append(champion.get_result())
+                result = champion.get_result()
+                data.append(result)
+                save(str(champion.outputResult.batch_battle_id), champion.outputResult.match_id, result)
             except Exception as e:
                 print(e)
 
     return data
+
+
+def save(path, file_name, content):
+    file_path = os.path.join(cwd, output, path)
+    if not os.path.exists(file_path):
+        os.makedirs(file_path)
+    with open(os.path.join(file_path, file_name + '.json'), 'w') as out:
+        print(file_path)
+        out.write(content)
+    out.close()
 
 
 def run():
