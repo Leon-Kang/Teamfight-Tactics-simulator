@@ -188,6 +188,14 @@ class champion:
         action.alive = alive
         # outputResult.actions.append(action)
 
+    def log_damage(self, damage):
+        if self.team == 'blue':
+            outputResult.blue_damages.append(damage)
+            outputResult.blue_damages_total += damage
+        else:
+            outputResult.red_damages.append(damage)
+            outputResult.red_damages_total += damage
+
     def spell(self, target, dmg, true_dmg=0, item_damage=False, burn_damage=False, trait_damage=False):
         enemy_team = 'red' if self.team == 'blue' else 'blue'
         if self == target:

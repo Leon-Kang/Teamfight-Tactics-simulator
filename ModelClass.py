@@ -225,6 +225,10 @@ class Output:
         self.startTime = datetime.now().timestamp().__str__()
         self.endTime = datetime.now().timestamp().__str__()
         self.match_id = ''
+        self.blue_damages = []
+        self.blue_damages_total = 0
+        self.red_damages = []
+        self.red_damages_total = 0
 
     def get_json(self):
         return json.dumps(self, default=lambda o: o.__dict__, sort_keys=True, indent=4)

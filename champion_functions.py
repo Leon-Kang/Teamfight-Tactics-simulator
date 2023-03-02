@@ -197,6 +197,7 @@ def attack(champion, target, bonus_dmg=0, item_attack=False, trait_attack='', se
                             target.shield_amount()), crit_string, dodge_string, item_string, trait_string))
                     # dealing the damage and killing the enemy if necessary
                     target.health -= damage
+                    champion.log_damage(damage)
                     if (
                             MILLIS() > target.castMS + target.manalock and not target.ability_active and target.maxmana > 0):
                         if not target.name == 'riven' or ability.riven_helper(target, {}):
