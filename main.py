@@ -1,11 +1,14 @@
 import json
 import multiprocessing as mp
 import os
+import zipfile
+from io import BytesIO
 
 from typing import Union
 from fastapi import FastAPI
 from pydantic import BaseModel
 import numpy as np
+from starlette.responses import StreamingResponse
 
 import champion
 from ModelClass import InputModel
@@ -124,3 +127,27 @@ if __name__ == '__main__':
 async def run_simulate(model: InputModel):
     result = run_model(model)
     return result
+
+
+@app.get("/battle/log/{battle_id}")
+async def get_battle(battle_id: str):
+
+    file_path = os.path.join(cwd, output, battle_id)
+
+    if os.path.exists(file_path):
+        files = []
+        for root, directories, filenames in os.walk(file_path):
+            for filename in filenames:
+                files.append(os.path.join(root, filename))
+        zip_io = BytesIO()
+        with zipfile.ZipFile(zip_io, mode='w') as temp_zip:
+            for file in files:
+                # Add the file to the ZIP file
+                temp_zip.write(file, os.path.relpath(file, file_path))
+        return StreamingResponse(
+            iter([zip_io.getvalue()]),
+            media_type="application/x-zip-compressed",
+            headers={f"Content-Disposition": f"attachment; filename={battle_id}.zip"}
+        )
+    else:
+        return 'wrong battle id in: ' + f'{file_path}'
