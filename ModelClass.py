@@ -96,6 +96,14 @@ class AttacksActive(ChampionActive):
         self.trait_attack = 0
         self.trait_string = ''
         self.millis = 0
+        self.ability = False
+
+
+class HealActive(ChampionActive):
+    def __init__(self, status, heal):
+        super().__init__('heal', status, heal)
+        self.heal = heal
+        self.millis = 0
 
 
 class Output:

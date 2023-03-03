@@ -10,7 +10,7 @@ import item_stats
 import stats
 import origin_class
 import origin_class_stats
-from ModelClass import ChampionActive, AttacksActive
+from ModelClass import ChampionActive, AttacksActive, HealActive
 from stats import *
 
 MILLISECONDS = 0
@@ -207,6 +207,7 @@ def attack(champion, target, bonus_dmg=0, item_attack=False, trait_attack='', se
                     action = AttacksActive(champion.get_status(), target.get_status(), crit_string, damage)
                     action.trait_attack = trait_attack
                     action.trait_string = trait_string
+                    action.ability = champion.ability_active
                     action.millis = MILLIS()
                     champion.add_action(action)
 
@@ -268,6 +269,8 @@ def attack(champion, target, bonus_dmg=0, item_attack=False, trait_attack='', se
                     if champion.health > champion.max_health:
                         champion.health = champion.max_health
                     champion.print(' heals ' + '{:<5}--> {:<8}'.format(ceil(health_old), ceil(champion.health)))
+                    action = HealActive(champion.get_status(), champion.health - health_old)
+                    champion.add_action(action)
 
                 # applying attack speed pause
                 champion.idle = False
