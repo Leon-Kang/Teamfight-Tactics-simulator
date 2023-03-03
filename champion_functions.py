@@ -10,7 +10,7 @@ import item_stats
 import stats
 import origin_class
 import origin_class_stats
-from ModelClass import ChampionActive
+from ModelClass import ChampionActive, AttacksActive
 from stats import *
 
 MILLISECONDS = 0
@@ -145,8 +145,10 @@ def attack(champion, target, bonus_dmg=0, item_attack=False, trait_attack='', se
         damage *= champion.deal_increased_damage
 
         damage -= target.damage_reduction
-        if damage < 0: damage = 0
-        if target.immune or target.autoimmune: damage = 0
+        if damage < 0:
+            damage = 0
+        if target.immune or target.autoimmune:
+            damage = 0
 
         crit_string = ''  # bramble vest -item
         if crit_random < champion.crit_chance and not 'bramble_vest' in target.items:
@@ -154,10 +156,13 @@ def attack(champion, target, bonus_dmg=0, item_attack=False, trait_attack='', se
             crit_string = ' crit'
 
         item_string = ''
-        if item_attack: item_string = ' item'
+        if item_attack:
+            item_string = ' item'
 
         trait_string = ''
-        if trait_attack: trait_string = ' {}'.format(trait_attack)
+        if trait_attack:
+            trait_string = ' {}'.format(trait_attack)
+
         if not (champion.name == 'galio' and crit_string):
 
             if champion.lifesteal > 0:
@@ -176,16 +181,17 @@ def attack(champion, target, bonus_dmg=0, item_attack=False, trait_attack='', se
                 shield_old = target.shield_amount()
 
                 if len(target.shields) > 0:
-                    while (not (damage <= 0 or target.shield_amount() <= 0)):
+                    while not (damage <= 0 or target.shield_amount() <= 0):
                         top_shield = target.shields[0]['amount']
                         target.shields[0]['amount'] -= damage
-                        if (target.shields[0]['amount'] < 0):
+                        if target.shields[0]['amount'] < 0:
                             damage -= top_shield
                             target.shields = target.shields[1:]
                         else:
                             damage = 0
 
-                # kalista is programmed to add a new spear --> and pull the spears IF spears_in_target * spear_dmg_after_MR + auto_dmg_after_armor > target.hp + target.shield_amount()
+                # kalista is programmed to add a new spear -->
+                # and pull the spears IF spears_in_target * spear_dmg_after_MR + auto_dmg_after_armor > target.hp + target.shield_amount()
                 # sometimes the spears deal enough dmg to kill the target and since the spear_pull happens just the same time as the auto,
                 #   but is registed before, the target may already be dead (also happens with zed)
                 if target.health > 0:
@@ -198,8 +204,13 @@ def attack(champion, target, bonus_dmg=0, item_attack=False, trait_attack='', se
                     # dealing the damage and killing the enemy if necessary
                     target.health -= damage
                     champion.log_damage(damage)
-                    if (
-                            MILLIS() > target.castMS + target.manalock and not target.ability_active and target.maxmana > 0):
+                    action = AttacksActive(champion.get_status(), target.get_status(), crit_string, damage)
+                    action.trait_attack = trait_attack
+                    action.trait_string = trait_string
+                    champion.add_action(action)
+
+                    if (MILLIS() > target.castMS + target.manalock
+                            and not target.ability_active and target.maxmana > 0):
                         if not target.name == 'riven' or ability.riven_helper(target, {}):
                             old_mana = target.mana
                             target.mana += min((damage * config.MANA_DAMAGE_GAIN) * target.mana_generation,
@@ -230,18 +241,19 @@ def attack(champion, target, bonus_dmg=0, item_attack=False, trait_attack='', se
                         origin_class.sharpshooter(champion, target, None, bonus_dmg, False)
 
                 # apply manalock. only give mana of the attack if it has been 1000ms since the last ability cast
-                if (
-                        champion.champion and MILLIS() > champion.castMS + champion.manalock and not champion.ability_active and champion.maxmana > 0 and not item_attack and not trait_attack):
+                if (champion.champion and MILLIS() > champion.castMS + champion.manalock
+                        and not champion.ability_active and champion.maxmana > 0
+                        and not item_attack and not trait_attack):
                     if not champion.name == 'riven' or ability.riven_helper(champion, {}):
                         old_mana = champion.mana
                         champion.mana += (config.MANA_PER_ATTACK * champion.mana_generation)
                         champion.mana += (
-                                    items.spear_of_shojin(champion) * champion.mana_generation)  # spear of shojin -item
+                                items.spear_of_shojin(champion) * champion.mana_generation)  # spear of shojin -item
                         champion.print(' mana {} --> {}'.format(round(old_mana, 1), round(champion.mana, 1)))
 
                 # aphelios turret triggering aphelios's shojins
-                if (
-                        champion.name == 'aphelios_turret' and MILLIS() > champion.overlord.castMS + champion.overlord.manalock and not trait_attack):
+                if (champion.name == 'aphelios_turret'
+                        and MILLIS() > champion.overlord.castMS + champion.overlord.manalock and not trait_attack):
                     old_mana = champion.overlord.mana
                     champion.overlord.mana += (items.spear_of_shojin(
                         champion) * champion.overlord.mana_generation)  # spear of shojin -item
@@ -258,7 +270,7 @@ def attack(champion, target, bonus_dmg=0, item_attack=False, trait_attack='', se
 
                 # applying attack speed pause
                 champion.idle = False
-                if (champion.name == 'aphelios_turret'):
+                if champion.name == 'aphelios_turret':
                     champion.overlord.add_que('clear_idle', 1 / champion.overlord.AS * 1000, None, None, None,
                                               {'underlord': champion})
 
@@ -287,8 +299,6 @@ def die(champion):
         # if(champion in champion.own_team()):
         champion.own_team().remove(champion)
         champion.print(' dies ')
-        die_action = ChampionActive('dies', champion.get_status())
-        champion.add_action(die_action)
 
         # zzrot_portal
         if 'zzrot_portal' in champion.items:
@@ -306,13 +316,6 @@ def die(champion):
             if u.name == 'aphelios_turret' or (u.name == 'sandguard' and u.health >= 0):
                 champion.own_team().remove(u)
                 champion.print(' {:<15}'.format(u.name) + ' dies ')
-
-
-
-
-
-
-
 
     # if the champion has zilean orb or guardian angel equipped
     else:

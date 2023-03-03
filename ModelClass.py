@@ -62,117 +62,6 @@ class BattleResult:
         self.red_teams = [OutputTeam(**t) for t in red_teams]
 
 
-# Parse the JSON data
-
-
-json_data = '''
-{
-  "test_id": 111233, 
-  "batch_battle_id": 11111111, 
-  "blue_lineups_num": 1000,
-  "red_lineups_num": 500,
-  "blue_teams": [
-    {
-      "lineup_id": 123,
-      "champions": [
-        {
-          "champion": "A",
-          "position": "(4,2)",
-          "star": 1,
-          "items": [
-            "item1",
-            "item2",
-            "item3"
-          ]
-        },
-        {
-          "champion": "B",
-          "position": "(2,3)",
-          "star": 1,
-          "items": [
-            "item1"
-          ]
-        }
-      ]
-    },
-    {
-      "lineup_id": 124,
-      "champions": [
-        {
-          "champion": "A",
-          "position": "(4,2)",
-          "star": 1,
-          "items": [
-            "item1",
-            "item2",
-            "item3"
-          ]
-        },
-        {
-          "champion": "B",
-          "position": "(2,3)",
-          "star": 1,
-          "items": [
-            "item1"
-          ]
-        }
-      ]
-    }
-  ],
-  "red_teams": [
-    {
-      "lineup_id": 222,
-      "champions": [
-        {
-          "champion": "A",
-          "position": "(4,2)",
-          "star": 1,
-          "items": [
-            "item1",
-            "item2",
-            "item3"
-          ]
-        },
-        {
-          "champion": "B",
-          "position": "(2,3)",
-          "star": 1,
-          "items": [
-            "item1"
-          ]
-        }
-      ]
-    },
-    {
-      "lineup_id": 333,
-      "champions": [
-        {
-          "champion": "A",
-          "position": "(4,2)",
-          "star": 1,
-          "items": [
-            "item1",
-            "item2",
-            "item3"
-          ]
-        },
-        {
-          "champion": "B",
-          "position": "(2,3)",
-          "star": 1,
-          "items": [
-            "item1"
-          ]
-        }
-      ]
-    }
-  ]
-}
-'''
-
-battle = BattleResult(**json.loads(json_data))
-
-
 class ChampionStatus:
     def __init__(self, name, star, position, hp, max_hp, team, c_shield, c_items):
         self.stars = star
@@ -187,20 +76,25 @@ class ChampionStatus:
 
 
 class ChampionActive:
-    def __init__(self, active_type, status, target_stat=None, round_team='', damage=0, alive=None, action_id=0):
+    def __init__(self, active_type, status, target_stat=None, alive=None):
         if alive is None:
             alive = {'red': 0, 'blue': 0}
-        self.round = 0
         # move, attack, dies, mana
         self.type = active_type
         # red, blue
-        self.round_team = round_team
-        self.champion: ChampionStatus = status
-        self.target: ChampionStatus = target_stat
-        self.alive = alive
-        self.timestamp = datetime.now().__str__()
-        self.id = action_id
+        self.agent: ChampionStatus = status
+        self.recipient: ChampionStatus = target_stat
+        self.survive = alive
+        self.timestamp = datetime.now().timestamp().__str__()
+
+
+class AttacksActive(ChampionActive):
+    def __init__(self, status, target_stat, crit, damage):
+        super().__init__('attacks', status, target_stat)
+        self.crit = crit
         self.damage = damage
+        self.trait_attack = 0
+        self.trait_string = ''
 
 
 class Output:

@@ -324,7 +324,7 @@ class champion:
                                                                                     burn_string,
                                                                                     item_string,
                                                                                     trait_string))
-                action = ChampionActive('deals', self.get_status(), target.get_status(), damage=damage, round_team=self.team)
+                action = ChampionActive('deals', self.get_status(), target.get_status())
                 self.add_action(action)
 
                 target.health -= damage
