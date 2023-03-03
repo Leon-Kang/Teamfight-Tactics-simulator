@@ -95,6 +95,7 @@ class AttacksActive(ChampionActive):
         self.damage = damage
         self.trait_attack = 0
         self.trait_string = ''
+        self.millis = 0
 
 
 class Output:

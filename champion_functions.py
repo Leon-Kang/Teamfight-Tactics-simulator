@@ -207,6 +207,7 @@ def attack(champion, target, bonus_dmg=0, item_attack=False, trait_attack='', se
                     action = AttacksActive(champion.get_status(), target.get_status(), crit_string, damage)
                     action.trait_attack = trait_attack
                     action.trait_string = trait_string
+                    action.millis = MILLIS()
                     champion.add_action(action)
 
                     if (MILLIS() > target.castMS + target.manalock
