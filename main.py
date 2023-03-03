@@ -65,8 +65,9 @@ def blue_fight(blue_teams: [], model: InputModel):
             try:
                 champion.run(champion.champion, team_data, model, r_team.lineup_id, b_team.lineup_id)
                 result = champion.get_result()
+                log = champion.get_log()
                 data.append(result)
-                save(str(champion.outputResult.batch_battle_id), champion.outputResult.match_id, result)
+                save(str(champion.outputResult.batch_battle_id), champion.outputResult.match_id, log)
             except Exception as e:
                 print(e)
 

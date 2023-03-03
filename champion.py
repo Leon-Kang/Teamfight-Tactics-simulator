@@ -1,6 +1,7 @@
 import datetime
 
-from ModelClass import Position, InputModel, ChampionActive, ChampionStatus, Output, OutputChampion, PositionClass
+from ModelClass import Position, InputModel, ChampionActive, ChampionStatus, Output, OutputChampion, PositionClass, \
+    StoryLog
 from stats import AD, HEALTH, ARMOR, MR, AS, RANGE, MANA, MAXMANA, MANALOCK, ABILITY_REQUIRES_TARGET, DODGE, \
     SHIELD_LENGTH, INITIATIVE_ACTIVE, ABILITY_LENGTH
 from champion_functions import reset_stat, attack, die, MILLIS, MILLISECONDS_INCREASE, add_damage_dealt
@@ -34,9 +35,16 @@ test_multiple = {
 global outputResult
 outputResult = Output()
 
+global storyLog
+storyLog = StoryLog()
+
 
 def get_result():
     return outputResult.get_json()
+
+
+def get_log():
+    return storyLog.get_json()
 
 
 class champion:
@@ -186,15 +194,17 @@ class champion:
         red_len = len(red)
         alive = {'blue': blue_len, 'red': red_len}
         action.alive = alive
-        # outputResult.actions.append(action)
+        storyLog.actions.append(action)
 
     def log_damage(self, damage):
         if self.team == 'blue':
-            outputResult.blue_damages.append(damage)
+            storyLog.blue_damages.append(damage)
             outputResult.blue_damages_total += damage
+            storyLog.blue_damages_total = outputResult.blue_damages_total
         else:
-            outputResult.red_damages.append(damage)
+            storyLog.red_damages.append(damage)
             outputResult.red_damages_total += damage
+            storyLog.red_damages_total = outputResult.red_damages_total
 
     def spell(self, target, dmg, true_dmg=0, item_damage=False, burn_damage=False, trait_damage=False):
         enemy_team = 'red' if self.team == 'blue' else 'blue'
@@ -665,6 +675,7 @@ def run(champion, team_data, model: InputModel = None, red_id='', blue_id=''):
                 outputResult.endTime = datetime.datetime.now().timestamp().__str__()
                 outputResult.match_id = f'{model.batch_battle_id}-{model.test_id}-{blue_id}-{red_id}-{outputResult.endTime}'
                 print(outputResult.get_json())
+                storyLog.get_values(outputResult)
                 break
 
 
@@ -755,11 +766,13 @@ def reset_global_variables():
     global que
     global log
     global outputResult
+    global storyLog
     blue = []
     red = []
     que = []
     log = []
     outputResult = Output()
+    storyLog = StoryLog()
 
     champion_functions.MILLISECONDS = 0
     champion_functions.damage_dealt = []

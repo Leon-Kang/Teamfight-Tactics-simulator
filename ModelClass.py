@@ -204,20 +204,18 @@ class ChampionActive:
 
 
 class Output:
-    def __init__(self, won='', actions=None, test_id='',
-                 batch_battle_id=0, origin_red=None, origin_blue=None, final_lineup=None):
+    def __init__(self, won='', test_id='', batch_battle_id=0,
+                 origin_red=None, origin_blue=None, final_lineup=None):
         if origin_red is None:
             origin_red = []
         if origin_blue is None:
             origin_blue = []
         if final_lineup is None:
             final_lineup = []
-        # if actions is None:
-        #     actions = []
+
         self.test_id = test_id
         self.batch_battle_id = batch_battle_id
         self.won_team = won
-        # self.actions: [ChampionActive] = actions
         self.origin_red = [OutputTeam(**t) for t in origin_red]
         self.origin_blue = [OutputTeam(**t) for t in origin_blue]
         self.final_lineup = [OutputTeam(**t) for t in final_lineup]
@@ -225,10 +223,30 @@ class Output:
         self.startTime = datetime.now().timestamp().__str__()
         self.endTime = datetime.now().timestamp().__str__()
         self.match_id = ''
-        self.blue_damages = []
         self.blue_damages_total = 0
-        self.red_damages = []
         self.red_damages_total = 0
 
     def get_json(self):
         return json.dumps(self, default=lambda o: o.__dict__, sort_keys=True, indent=4)
+
+
+class StoryLog(Output):
+    def __init__(self, actions=None):
+        super().__init__()
+        if actions is None:
+            actions = []
+        self.actions: [ChampionActive] = actions
+        self.blue_damages = []
+        self.red_damages = []
+
+    def get_values(self, parent: Output):
+        self.millis = parent.millis
+        self.test_id = parent.test_id
+        self.batch_battle_id = parent.batch_battle_id
+        self.won_team = parent.won_team
+        self.origin_red = parent.origin_red
+        self.origin_blue = parent.origin_blue
+        self.final_lineup = parent.final_lineup
+        self.startTime = parent.startTime
+        self.endTime = parent.endTime
+        self.match_id = parent.match_id
