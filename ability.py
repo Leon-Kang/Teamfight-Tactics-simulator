@@ -35,6 +35,7 @@ def default_ability_calls(champion):
     if not (champion.name == 'galio' and champion.stars == 1):
         champion.print(' ability triggered ')
         action = AbilityTriggerActive(champion.get_status())
+        action.millis = champion_functions.MILLIS()
         champion.add_action(action)
 
     if champion.mana_cost_increased:
