@@ -35,7 +35,7 @@ def run_model(model: InputModel):
     data = []
     blue_teams = model.blue_teams
     count = len(blue_teams)
-    tasks_count = min(count, 1)
+    tasks_count = min(count, 4)
     tasks = np.array_split(blue_teams, tasks_count)
     print(tasks)
     pool = mp.Pool(tasks_count)
