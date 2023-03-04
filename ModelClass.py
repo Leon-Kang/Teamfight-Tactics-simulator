@@ -99,6 +99,13 @@ class AttacksActive(ChampionActive):
         self.ability = False
 
 
+class DealsActive(AttacksActive):
+    def __init__(self, status, target_stat, damage):
+        super().__init__('deals', status, target_stat, '')
+        self.burn_string = ''
+        self.damage = damage
+
+
 class HealActive(ChampionActive):
     def __init__(self, status, heal):
         super().__init__('heal', status, heal)

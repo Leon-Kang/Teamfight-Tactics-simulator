@@ -1,7 +1,7 @@
 import datetime
 
 from ModelClass import Position, InputModel, ChampionActive, ChampionStatus, Output, OutputChampion, PositionClass, \
-    StoryLog
+    StoryLog, AttacksActive
 from stats import AD, HEALTH, ARMOR, MR, AS, RANGE, MANA, MAXMANA, MANALOCK, ABILITY_REQUIRES_TARGET, DODGE, \
     SHIELD_LENGTH, INITIATIVE_ACTIVE, ABILITY_LENGTH
 from champion_functions import reset_stat, attack, die, MILLIS, MILLISECONDS_INCREASE, add_damage_dealt
@@ -193,7 +193,7 @@ class champion:
         blue_len = len(blue)
         red_len = len(red)
         alive = {'blue': blue_len, 'red': red_len}
-        action.alive = alive
+        action.survive = alive
         storyLog.actions.append(action)
 
     def log_damage(self, damage):
@@ -324,7 +324,12 @@ class champion:
                                                                                     burn_string,
                                                                                     item_string,
                                                                                     trait_string))
-                action = ChampionActive('deals', self.get_status(), target.get_status())
+                action = AttacksActive('deals', self.get_status(), target.get_status(), crit_string)
+                action.trait_string = trait_string
+                action.burn_string = burn_string
+                action.ability = self.ability_active
+                action.millis = MILLIS()
+                action.damage = damage
                 self.add_action(action)
 
                 target.health -= damage
@@ -335,7 +340,6 @@ class champion:
                         target.mana += min((damage * config.MANA_DAMAGE_GAIN) * target.mana_generation,
                                            config.MAX_MANA_FROM_DAMAGE)
                         target.print(' mana {} --> {}'.format(round(old_mana, 1), round(target.mana, 1)))
-                        action = ChampionActive('mana', self.get_status())
 
                 # titans_resolve -item
                 # add bonus damage and armors after the values have been used.
