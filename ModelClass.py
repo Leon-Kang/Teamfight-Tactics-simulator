@@ -63,15 +63,13 @@ class BattleResult:
 
 
 class ChampionStatus:
-    def __init__(self, name, star, position, hp, max_hp, team, c_shield, c_items):
+    def __init__(self, name, star, position, hp, max_hp, team, c_items):
         self.stars = star
         self.name = name
         self.position = position
-        # self.position_move = {'x': 0, 'y': 0}
         self.hp = hp
         self.max_hp = max_hp
         self.team = team
-        self.shield = c_shield
         self.items = c_items
 
 
@@ -97,6 +95,8 @@ class AttacksActive(ChampionActive):
         self.trait_string = ''
         self.millis = 0
         self.ability = False
+        self.shield_old = 0
+        self.shield_amount = 0
 
 
 class DealsActive(ChampionActive):
@@ -108,6 +108,8 @@ class DealsActive(ChampionActive):
         self.trait_string = ''
         self.millis = 0
         self.ability = False
+        self.shield_old = 0
+        self.shield_amount = 0
 
 
 class HealActive(ChampionActive):
