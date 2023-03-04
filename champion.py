@@ -163,7 +163,7 @@ class champion:
 
     def get_status(self):
         status = ChampionStatus(self.name, self.stars, {'x': self.x, 'y': self.y}, self.health,
-                                self.max_health, self.team, self.shields, self.items)
+                                self.max_health, self.team, self.items)
         return status
 
     def attack(self, bonus_dmg=0, target=None, item_attack=False, trait_attack='', set_AD=None):
@@ -329,6 +329,8 @@ class champion:
                 action.burn_string = burn_string
                 action.ability = self.ability_active
                 action.millis = MILLIS()
+                action.shield_amount = target.shield_amount()
+                action.shield_old = shield_old
                 self.add_action(action)
 
                 target.health -= damage
