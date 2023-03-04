@@ -677,7 +677,6 @@ def run(champion, team_data, model: InputModel = None, red_id='', blue_id=''):
                 outputResult.millis = MILLIS()
                 outputResult.endTime = datetime.datetime.now().timestamp().__str__()
                 outputResult.match_id = f'{model.batch_battle_id}-{model.test_id}-{blue_id}-{red_id}-{outputResult.endTime}'
-                print(outputResult.get_json())
                 storyLog.get_values(outputResult)
                 break
 

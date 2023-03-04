@@ -12,7 +12,6 @@ from starlette.responses import StreamingResponse
 
 import champion
 from ModelClass import InputModel
-from champion_functions import MILLIS
 
 test_json = {'blue': [{'name': 'pyke', 'stars': 1, 'items': [], 'y': 3, 'x': 2},
                       {'name': 'wukong', 'stars': 1, 'items': [], 'y': 3, 'x': 3},
@@ -36,8 +35,9 @@ def run_model(model: InputModel):
     data = []
     blue_teams = model.blue_teams
     count = len(blue_teams)
-    tasks_count = min(count, 4)
+    tasks_count = min(count, 1)
     tasks = np.array_split(blue_teams, tasks_count)
+    print(tasks)
     pool = mp.Pool(tasks_count)
     tasks_pool = [pool.apply_async(blue_fight, args=(teams, model)) for teams in tasks]
     for p in tasks_pool:
@@ -70,6 +70,7 @@ def blue_fight(blue_teams: [], model: InputModel):
                 save(str(champion.outputResult.batch_battle_id), champion.outputResult.match_id, log)
             except Exception as e:
                 print(e)
+                save('error' + str(champion.outputResult.batch_battle_id), champion.outputResult.match_id, e.__str__())
 
     return data
 
@@ -78,10 +79,10 @@ def save(path, file_name, content):
     file_path = os.path.join(cwd, output, path)
     if not os.path.exists(file_path):
         os.makedirs(file_path)
-    with open(os.path.join(file_path, file_name + '.json'), 'w') as out:
-        print(file_path)
+    log_path = os.path.join(file_path, file_name + '.json')
+    with open(log_path, 'w') as out:
+        print(log_path)
         out.write(content)
-    out.close()
 
 
 def run():
