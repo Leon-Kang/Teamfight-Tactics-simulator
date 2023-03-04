@@ -9,6 +9,8 @@ import origin_class_stats
 import items
 from math import ceil, floor
 
+from ModelClass import AbilityTriggerActive
+
 
 # ALL ULT FUNCTIONS BASE HERE. NAMED:
 # THE FIRST IS JUST 'champion.name'
@@ -26,19 +28,23 @@ from math import ceil, floor
 def keep_legit_coord(coords):
     return list(filter(lambda x: max(x) < 8 and min(x) > -1, coords))
 
-def default_ability_calls(champion):
-    if (not champion.target): field.find_target(champion)
-    if (not (champion.name == 'galio' and champion.stars == 1)):
-        champion.print(' ability triggered ')
 
-    if (champion.mana_cost_increased):
+def default_ability_calls(champion):
+    if not champion.target:
+        field.find_target(champion)
+    if not (champion.name == 'galio' and champion.stars == 1):
+        champion.print(' ability triggered ')
+        # action = AbilityTriggerActive(champion.get_status())
+        # champion.add_action(action)
+
+    if champion.mana_cost_increased:
         champion.print(' {} {} --> {}'.format('mana_cost_increased', True, False))
 
     for i in range(0, champion.ionic_sparked):
         champion.spell(champion, champion.maxmana * item_stats.damage['ionic_spark'], 0, True)
 
     # spirit -trait
-    if (origin_class.is_trait(champion, 'spirit')):
+    if origin_class.is_trait(champion, 'spirit'):
         origin_class.spirit(champion)
 
     champion.spell_has_used_ludens = False  # ludens_echo helper

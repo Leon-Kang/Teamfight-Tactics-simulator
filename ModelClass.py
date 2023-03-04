@@ -117,6 +117,11 @@ class HealActive(ChampionActive):
         self.millis = 0
 
 
+class AbilityTriggerActive(ChampionActive):
+    def __init__(self, status):
+        super().__init__('ability_trigger', status)
+
+
 class Output:
     def __init__(self, won='', test_id='', batch_battle_id=0,
                  origin_red=None, origin_blue=None, final_lineup=None):
