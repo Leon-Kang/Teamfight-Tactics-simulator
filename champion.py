@@ -1,7 +1,7 @@
 import datetime
 
 from ModelClass import Position, InputModel, ChampionActive, ChampionStatus, Output, OutputChampion, PositionClass, \
-    StoryLog, AttacksActive
+    StoryLog, AttacksActive, DealsActive
 from stats import AD, HEALTH, ARMOR, MR, AS, RANGE, MANA, MAXMANA, MANALOCK, ABILITY_REQUIRES_TARGET, DODGE, \
     SHIELD_LENGTH, INITIATIVE_ACTIVE, ABILITY_LENGTH
 from champion_functions import reset_stat, attack, die, MILLIS, MILLISECONDS_INCREASE, add_damage_dealt
@@ -324,12 +324,11 @@ class champion:
                                                                                     burn_string,
                                                                                     item_string,
                                                                                     trait_string))
-                action = AttacksActive('deals', self.get_status(), target.get_status(), crit_string)
+                action = DealsActive(self.get_status(), target.get_status(), damage)
                 action.trait_string = trait_string
                 action.burn_string = burn_string
                 action.ability = self.ability_active
                 action.millis = MILLIS()
-                action.damage = damage
                 self.add_action(action)
 
                 target.health -= damage
