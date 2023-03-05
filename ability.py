@@ -1136,22 +1136,26 @@ def leesin(champion):
             # if target is on a side
             if t.y == 7 or t.y == 0 or t.x == 6 or t.x == 0:
 
+
                 corners = [[0, 0], [0, 6], [7, 6], [7, 0]]
 
                 # if they both are on a side lines, remove some corners from the list
                 if champion.y == 7 or champion.y == 0 or champion.x == 6 or champion.x == 0:
-                    if champion.x > t.x:
-                        corners.remove([0, 6])
-                        corners.remove([7, 6])
-                    if champion.x < t.x:
-                        corners.remove([0, 0])
-                        corners.remove([7, 0])
-                    if champion.y > t.y:
-                        corners.remove([7, 6])
-                        corners.remove([7, 0])
-                    if champion.y < t.y:
-                        corners.remove([0, 0])
-                        corners.remove([0, 6])
+                    try:
+                        if champion.x > t.x:
+                            corners.remove([0, 6])
+                            corners.remove([7, 6])
+                        if champion.x < t.x:
+                            corners.remove([0, 0])
+                            corners.remove([7, 0])
+                        if champion.y > t.y:
+                            corners.remove([7, 6])
+                            corners.remove([7, 0])
+                        if champion.y < t.y:
+                            corners.remove([0, 0])
+                            corners.remove([0, 6])
+                    except ValueError:
+                        pass
 
                 # find the closest corner
                 for i, c in enumerate(corners):
