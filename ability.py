@@ -1102,8 +1102,10 @@ def leesin(champion):
         e_x = end_point[1]
         end_point_original = [e_y, e_x]
         if e_x == 6 or e_x == 0:
-            if e_y > champion.y: end_point[0] = 7
-            if e_y < champion.y: end_point[0] = 0
+            if e_y > champion.y:
+                end_point[0] = 7
+            if e_y < champion.y:
+                end_point[0] = 0
             if e_y == champion.y:
                 if champion.y <= 3:
                     end_point[0] = 0
@@ -1111,8 +1113,10 @@ def leesin(champion):
                     end_point[0] = 7
 
         elif e_y == 7 or e_y == 0:
-            if e_x > champion.x: end_point[1] = 6
-            if e_x < champion.x: end_point[1] = 0
+            if e_x > champion.x:
+                end_point[1] = 6
+            if e_x < champion.x:
+                end_point[1] = 0
             if e_x == champion.x:
                 if champion.y % 2 == 0:
                     end_point[1] = 0
@@ -2016,7 +2020,7 @@ def sylas(champion):
     for p in neighbors:
         d_champion = field.distance({'y': champion.y, 'x': champion.x}, {'y': p[0], 'x': p[1]}, False)
         d_first_hex = field.distance({'y': first_hex[0], 'x': first_hex[1]}, {'y': p[0], 'x': p[1]}, False)
-        if (d_champion == 1 and d_first_hex == 1):
+        if d_champion == 1 and d_first_hex == 1:
             primary_neighbors.append(p)
 
     smash_line.append(first_hex)
@@ -2027,10 +2031,10 @@ def sylas(champion):
     for s in keep_legit_coord(smash_line):
         print(s)
         c = coords[s[0]][s[1]]
-        if (c and c.team != champion.team and c.champion):
+        if c and c.team != champion.team and c.champion:
 
             # increase next spell mana cost of every enemy in the line by 33% = reduce mana by 33% of maxmana
-            if (not c.mana_cost_increased and c.maxmana > 0):
+            if not c.mana_cost_increased and c.maxmana > 0:
                 mana_reduce_amount = c.maxmana * stats.ABILITY_MANA_REQUIREMENT_INCREASEMENT[champion.name]
                 start_value = c.mana
                 c.mana -= mana_reduce_amount
