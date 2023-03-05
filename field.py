@@ -319,11 +319,13 @@ def cube_round(cube):
 
 
 def line(starting_point, end_point):
-    N = distance({'y': starting_point['y'], 'x': starting_point['x']}, {'y': end_point['y'], 'x': end_point['x']},
+    N = distance({'y': starting_point['y'], 'x': starting_point['x']},
+                 {'y': end_point['y'], 'x': end_point['x']},
                  False)
     results = []
-    for i in range(0, int(N) + 1):
-        results.append(to_normal_coords(cube_round(cube_lerp(starting_point, end_point, 1.0 / N * i))))
+    if int(N) != 0:
+        for i in range(0, int(N) + 1):
+            results.append(to_normal_coords(cube_round(cube_lerp(starting_point, end_point, 1.0 / N * i))))
     return results
 
 
