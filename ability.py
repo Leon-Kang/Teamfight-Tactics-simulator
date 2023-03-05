@@ -26,7 +26,7 @@ from ModelClass import AbilityTriggerActive
 # The pics are pretty shit and were made just for my own good but decided to include them anyway
 
 def keep_legit_coord(coords):
-    return list(filter(lambda x: max(x) < 8 and min(x) > -1, coords))
+    return [x for x in coords if x[0] < 8 and x[1] < 7 and min(x) > -1]
 
 
 def default_ability_calls(champion):
