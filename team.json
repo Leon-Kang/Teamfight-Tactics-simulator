@@ -1,0 +1,76 @@
+{
+    "blue": [
+        {
+            "name": "ashe",
+            "stars": "1",
+            "items": [],
+            "y": "2",
+            "x": "1"
+        },
+        {
+            "name": "ashe",
+            "stars": "1",
+            "items": [],
+            "y": "2",
+            "x": "1"
+        },
+        {
+            "name": "ashe",
+            "stars": "1",
+            "items": [],
+            "y": "2",
+            "x": "1"
+        },
+        {
+            "name": "ashe",
+            "stars": "1",
+            "items": [],
+            "y": "2",
+            "x": "1"
+        },
+        {
+            "name": "aphelios",
+            "stars": "1",
+            "items": [],
+            "y": "1",
+            "x": "3"
+        }
+    ],
+    "red": [
+        {
+            "name": "azir",
+            "stars": "1",
+            "items": [],
+            "y": "7",
+            "x": "2"
+        },
+        {
+            "name": "ashe",
+            "stars": "1",
+            "items": [],
+            "y": "6",
+            "x": "2"
+        },
+        {
+            "name": "ashe",
+            "stars": "1",
+            "items": [],
+            "y": "6",
+            "x": "2"
+        },
+        {
+            "name": "ashe",
+            "stars": "1",
+            "items": [],
+            "y": "6",
+            "x": "2"
+        },
+        {
+            "name": "aphelios",
+            "stars": "1",
+            "items": [],
+            "y": "5",
+            "x": "4"
+        }
+    ]
+}

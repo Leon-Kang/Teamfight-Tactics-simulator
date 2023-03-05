@@ -1,105 +1,135 @@
 import datetime
+import multiprocessing as mp
+import os
+import zipfile
+from io import BytesIO
+
+from fastapi import FastAPI
+import numpy as np
+from starlette.responses import StreamingResponse
 
 import champion
-from champion_functions import MILLIS
+from ModelClass import InputModel
 
-import multiprocessing
+test_json = {'blue': [{'name': 'pyke', 'stars': 1, 'items': [], 'y': 3, 'x': 2},
+                      {'name': 'wukong', 'stars': 1, 'items': [], 'y': 3, 'x': 3},
+                      {'name': 'lissandra', 'stars': 1, 'items': [], 'y': 1, 'x': 2},
+                      {'name': 'warwick', 'stars': 1, 'items': [], 'y': 1, 'x': 3},
+                      {'name': 'irelia', 'stars': 1, 'items': [], 'y': 1, 'x': 4}],
+             'red': [{'name': 'tahmkench', 'stars': 1, 'items': [], 'y': 6, 'x': 2},
+                     {'name': 'sylas', 'stars': 1, 'items': [], 'y': 6, 'x': 3},
+                     {'name': 'cassiopeia', 'stars': 1, 'items': [], 'y': 6, 'x': 4},
+                     {'name': 'construct', 'stars': 1, 'items': [], 'y': 4, 'x': 2},
+                     {'name': 'jarvaniv', 'stars': 1, 'items': [], 'y': 4, 'x': 3}]}
 
-import tkinter as tk
+app = FastAPI()
 
-master = tk.Tk()
-tk.Label(master, text="Team data").grid(row=0)
-tk.Label(master, text="Iterations").grid(row=1)
-tk.Label(master, text="Results").grid(row=2)
-tk.Label(master, text='Status').grid(row=3)
-
-team_json = tk.Entry(master)
-iterations = tk.Entry(master)
-blue_results = tk.Entry(master)
-red_results = tk.Entry(master)
-bugged_out_results = tk.Entry(master)
-draw_results = tk.Entry(master)
-status = tk.Entry(master)
-
-team_json.grid(row=0, column=1)
-iterations.grid(row=1, column=1)
-blue_results.grid(row=2, column=1)
-red_results.grid(row=2, column=2)
-bugged_out_results.grid(row=2, column=3)
-draw_results.grid(row=2, column=4)
-status.grid(row=3, column=1)
+cwd = os.getcwd()
+output = 'output'
 
 
-# team_data = team_json.get()
-# iterations_data = iterations.get()
+def run_model(model: InputModel):
+    result = {}
+    data = []
+    blue_teams = model.blue_teams
+    count = len(blue_teams)
+    works = model.num_workers
+    tasks_count = min(count, works)
+    tasks = np.array_split(blue_teams, tasks_count)
+    print(tasks)
+    pool = mp.Pool(tasks_count)
+    tasks_pool = [pool.apply_async(blue_fight, args=(teams, model)) for teams in tasks]
+    for p in tasks_pool:
+        data.append(p.get())
+
+    result['data'] = data
+    return result
 
 
-def set_status(val):
-    status.delete(0, tk.END)
-    status.insert(0, val)
+def blue_fight(blue_teams: [], model: InputModel):
+    data = []
+    for b_team in blue_teams:
+        blue_teams = []
+        for t in b_team.champions:
+            team = {'name': t.champion, 'stars': int(t.star), 'items': t.items, 'y': t.position.y, 'x': t.position.x}
+            blue_teams.append(team)
+        for r_team in model.red_teams:
+            red_teams = []
+            for r in r_team.champions:
+                r_champion = {'name': r.champion, 'stars': int(r.star), 'items': r.items, 'y': r.position.y,
+                              'x': r.position.x}
+                red_teams.append(r_champion)
+            team_data = {'blue': blue_teams, 'red': red_teams}
+            print(team_data)
+            try:
+                champion.run(champion.champion, team_data, model, r_team.lineup_id, b_team.lineup_id)
+                result = champion.get_result()
+                log = champion.get_log()
+                data.append(result)
+                save(str(champion.outputResult.batch_battle_id), champion.outputResult.match_id, log)
+            except Exception as e:
+                print(e)
+                save('error' + str(champion.outputResult.batch_battle_id), champion.outputResult.match_id, e.__str__())
+
+    return data
 
 
-set_status('idle')
+def save(path, file_name, content):
+    file_path = os.path.join(cwd, output, path)
+    if not os.path.exists(file_path):
+        os.makedirs(file_path)
+    log_path = os.path.join(file_path, file_name + '.json')
+    with open(log_path, 'w') as out:
+        print(log_path)
+        out.write(content)
 
 
 def run():
-    # global test_multiple
-    set_status('running')
-
-    team_data = team_json.get()
-    iterations_data = int(iterations.get())
-
-    jobs = []
+    team_data = test_json
 
     if team_data:
-        for i in range(1, iterations_data + 2):
-            if status.get() == 'idle':
-                break
-
-            try:
-                champion.run(champion.champion, team_data)
-            except:
-                champion.test_multiple['bugged out'] += 1
-
-            blue_results.delete(0, tk.END)
-            blue_results.insert(0, 'blue: ' + str(champion.test_multiple['blue']))
-            red_results.delete(0, tk.END)
-            red_results.insert(0, 'red: ' + str(champion.test_multiple['red']))
-            bugged_out_results.delete(0, tk.END)
-            bugged_out_results.insert(0, 'bugged rounds: ' + str(champion.test_multiple['bugged out']))
-            draw_results.delete(0, tk.END)
-            draw_results.insert(0, 'draws: ' + str(champion.test_multiple['draw']))
-            master.update()
-
-            filename = datetime.datetime.now().strftime("%H:%M:%S")
-
-            with open(filename + '.log', "w") as out:
-                if MILLIS() < 75000:
-                    if champion.log[-1] == 'BLUE TEAM WON':
-                        champion.test_multiple['blue'] += 1
-                    if champion.log[-1] == 'RED TEAM WON':
-                        champion.test_multiple['red'] += 1
-                elif MILLIS() < 200000:
-                    champion.test_multiple['draw'] += 1
-                for line in champion.log:
-                    out.write(str(line))
-                    out.write('\n')
-            out.close()
-
-    champion.test_multiple = {'blue': 0, 'red': 0, 'bugged out': 0, 'draw': 0}
-    set_status('idle')
-    master.update()
-
-    # set_stop(False)
+        champion.run(champion.champion, team_data)
 
 
-start_simulations = tk.Button(master, text='Run simulations', command=lambda: run())
-start_simulations.grid(row=4, column=1, sticky=tk.W, pady=4)
+if __name__ == '__main__':
+    run()
 
-stop_simulations = tk.Button(master, text='Stop', command=lambda: set_status('idle'))
-stop_simulations.grid(row=4, column=2, sticky=tk.W, pady=4)
 
-quit_simulations = tk.Button(master, text='Quit', command=lambda: master.quit())
-quit_simulations.grid(row=4, column=3, sticky=tk.W, pady=4)
+@app.put("/run/{test_id}")
+async def run_simulate(model: InputModel):
+    result = run_model(model)
+    return result
 
-tk.mainloop()
+
+@app.get("/battle/log/{battle_id}")
+async def get_battle(battle_id: str):
+    file_path = os.path.join(cwd, output, battle_id)
+
+    if os.path.exists(file_path):
+        files = []
+        for root, directories, filenames in os.walk(file_path):
+            for filename in filenames:
+                files.append(os.path.join(root, filename))
+        zip_io = BytesIO()
+        with zipfile.ZipFile(zip_io, mode='w') as temp_zip:
+            for file in files:
+                # Add the file to the ZIP file
+                temp_zip.write(file, os.path.relpath(file, file_path))
+        os.rename(file_path, file_path + '-' + datetime.datetime.now().timestamp().__str__())
+        return StreamingResponse(
+            iter([zip_io.getvalue()]),
+            media_type="application/x-zip-compressed",
+            headers={f"Content-Disposition": f"attachment; filename={battle_id}.zip"}
+        )
+    else:
+        return 'wrong battle id in: ' + f'{file_path}'
+
+
+@app.get("/all/battles")
+async def get_all_battle():
+    file_path = os.path.join(cwd, output)
+
+    if os.path.exists(file_path):
+        files = []
+        for root, directories, filenames in os.walk(file_path):
+            return directories

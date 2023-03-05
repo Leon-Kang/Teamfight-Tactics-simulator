@@ -1,0 +1,134 @@
+{
+  "test_id": 111233,
+  "batch_battle_id": 11111111,
+  "blue_lineups_num": 1000,
+  "red_lineups_num": 500,
+  "blue_teams": [
+    {
+      "lineup_id": 123,
+      "champions": [
+        {
+          "champion": "sylas",
+          "position": {
+            "x": "3",
+            "y": "2"
+          },
+          "star": 1,
+          "items": []
+        },
+        {
+          "champion": "vayne",
+          "position": {
+            "x": "2",
+            "y": "3"
+          },
+          "star": 1,
+          "items": []
+        }
+      ]
+    },
+    {
+      "lineup_id": 124,
+      "champions": [
+        {
+          "champion": "garen",
+          "position": {
+            "x": "4",
+            "y": "2"
+          },
+          "star": 1,
+          "items": []
+        },
+        {
+          "champion": "vi",
+          "position": {
+            "x": "2",
+            "y": "3"
+          },
+          "star": 1,
+          "items": []
+        }
+      ]
+    }
+  ],
+  "red_teams": [
+    {
+      "lineup_id": 222,
+      "champions": [
+        {
+          "champion": "aatrox",
+          "position": {
+            "x": "4",
+            "y": "5"
+          },
+          "star": 1,
+          "items": []
+        },
+        {
+          "champion": "fiora",
+          "position": {
+            "x": "3",
+            "y": "6"
+          },
+          "star": 1,
+          "items": []
+        }
+      ]
+    },
+    {
+      "lineup_id": 333,
+      "champions": [
+        {
+          "champion": "veigar",
+          "position": {
+            "x": "4",
+            "y": "2"
+          },
+          "star": 1,
+          "items": []
+        },
+        {
+          "champion": "aatrox",
+          "position": {
+            "x": "3",
+            "y": "7"
+          },
+          "star": 1,
+          "items": []
+        }
+      ]
+    }
+  ]
+}
+
+{
+  "test_id": 111233,
+  "batch_battle_id": 11111111,
+  "results": [
+    {
+      "battle_id": 3424,
+      "blue_lineup_id": 123,
+      "red_lineup_id": 987,
+      "win": 1,
+      "dmg_given": 324,
+      "dmg_taken": 123,
+      "remain_hp": 3333,
+      "elapsed_time": 110110,
+      "over_time": 0,
+      "survivors": 4
+    },
+    {
+      "battle_id": 33424,
+      "blue_lineup_id": 123,
+      "red_lineup_id": 987,
+      "win": 1,
+      "dmg_given": 324,
+      "dmg_taken": 123,
+      "remain_hp": 3333,
+      "elapsed_time": 110110,
+      "over_time": 0,
+      "survivors": 4
+    }
+  ]
+}
+
