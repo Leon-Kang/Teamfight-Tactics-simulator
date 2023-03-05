@@ -303,8 +303,9 @@ def die(champion):
         # free the coordinates
         field.coordinates[champion.y][champion.x] = None
         # if(champion in champion.own_team()):
-        champion.own_team().remove(champion)
-        champion.print(' dies ')
+        if champion in champion.own_team():
+            champion.own_team().remove(champion)
+            champion.print(' dies ')
 
         # zzrot_portal
         if 'zzrot_portal' in champion.items:
