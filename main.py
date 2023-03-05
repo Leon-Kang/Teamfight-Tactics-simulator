@@ -104,7 +104,6 @@ async def run_simulate(model: InputModel):
 
 @app.get("/battle/log/{battle_id}")
 async def get_battle(battle_id: str):
-
     file_path = os.path.join(cwd, output, battle_id)
 
     if os.path.exists(file_path):
@@ -124,3 +123,13 @@ async def get_battle(battle_id: str):
         )
     else:
         return 'wrong battle id in: ' + f'{file_path}'
+
+
+@app.get("/all/battles")
+async def get_all_battle():
+    file_path = os.path.join(cwd, output)
+
+    if os.path.exists(file_path):
+        files = []
+        for root, directories, filenames in os.walk(file_path):
+            return directories
