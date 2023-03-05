@@ -1,12 +1,10 @@
-import json
+import datetime
 import multiprocessing as mp
 import os
 import zipfile
 from io import BytesIO
 
-from typing import Union
 from fastapi import FastAPI
-from pydantic import BaseModel
 import numpy as np
 from starlette.responses import StreamingResponse
 
@@ -116,6 +114,7 @@ async def get_battle(battle_id: str):
             for file in files:
                 # Add the file to the ZIP file
                 temp_zip.write(file, os.path.relpath(file, file_path))
+        os.rename(file_path, file_path + '-' + datetime.datetime.now().timestamp().__str__())
         return StreamingResponse(
             iter([zip_io.getvalue()]),
             media_type="application/x-zip-compressed",
