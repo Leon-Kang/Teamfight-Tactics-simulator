@@ -545,7 +545,7 @@ def run(champion, team_data, model: InputModel = None, red_id='', blue_id=''):
             daddy_coordinates = [int(c["overlord_coordinates"][0]),
                                  int(c["overlord_coordinates"][1])]
         champion_cur = champion(c['name'], int(c['stars']), 'blue', int(c['y']),
-                                int(c['x']), c['items'], False, daddy_coordinates, c['chosen'])
+                                int(c['x']), c['items'], False, daddy_coordinates)
         blue.append(champion_cur)
         outputResult.origin_blue.append(champion_cur.get_status())
     for c in data['red']:
@@ -554,7 +554,7 @@ def run(champion, team_data, model: InputModel = None, red_id='', blue_id=''):
             daddy_coordinates = [int(c["overlord_coordinates"][0]),
                                  int(c["overlord_coordinates"][1])]
         champion_cur = champion(c['name'], int(c['stars']), 'red', int(c['y']),
-                                int(c['x']), c['items'], False, daddy_coordinates, c['chosen'])
+                                int(c['x']), c['items'], False, daddy_coordinates)
         red.append(champion_cur)
         outputResult.origin_red.append(champion_cur.get_status())
 
