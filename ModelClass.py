@@ -29,6 +29,7 @@ class InputModel(BaseModel):
     red_lineups_num: int
     blue_teams: List[Lineup]
     red_teams: List[Lineup]
+    num_workers: int
 
 
 # output
