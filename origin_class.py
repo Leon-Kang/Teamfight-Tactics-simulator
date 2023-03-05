@@ -641,7 +641,7 @@ def shade_helper(champion):
                     c.target = None
 
         if attacks % 4 == 0 and attacks > 1:
-            if champion.target.health > 0:
+            if champion.target is not None and champion.target.health > 0:
                 champion.spell(champion.target, origin_class_stats.damage['shade'][tier] / champion.SP)
 
 

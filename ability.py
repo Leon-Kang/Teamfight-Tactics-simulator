@@ -923,8 +923,8 @@ def katarina_ability(champion, data):
 
 
 def kayn(champion, data={'redash': False}):
-    if not champion.stunned:
-        if not champion.target:
+    if champion is not None and not champion.stunned:
+        if champion.target is not None:
             field.find_target(champion)
             champion.print(
                 ' has a new target: ' + '{:<8}'.format(champion.target.team) + '{:<8}'.format(champion.target.name))
@@ -933,12 +933,14 @@ def kayn(champion, data={'redash': False}):
         distance = field.distance(champion, champion.target, True)
 
         r = random.randint(0, 100)
-        if ((distance > 1 or r > 50) and not data['redash']) or (r > 50 and data['redash']):
+        if distance is not None and\
+                ((distance > 1 or r > 50)
+                 and not data['redash']) or (r > 50 and data['redash']):
             target_neighbors = field.find_neighbors(champion.target.y, champion.target.x)
             empty_neighbors = []
             coords = field.coordinates
             for n in target_neighbors:
-                if (not coords[n[0]][n[1]]):
+                if not coords[n[0]][n[1]]:
                     empty_neighbors.append(n)
 
             dash_coords = empty_neighbors[random.randint(0, len(empty_neighbors) - 1)]
@@ -1803,9 +1805,12 @@ def riven(champion):
                     slash_hexes.append(corner_neighbors[1])
 
                     for s in slash_hexes:
-                        c = coords[s[0]][s[1]]
-                        if (c and c.team != champion.team and c.champion):
-                            champion.spell(c, stats.ABILITY_SECONDARY_DMG[champion.name][champion.stars])
+                        try:
+                            c = coords[s[0]][s[1]]
+                            if c and c.team != champion.team and c.champion:
+                                champion.spell(c, stats.ABILITY_SECONDARY_DMG[champion.name][champion.stars])
+                        except Exception as e:
+                            print(e.__str__() + '-' + champion.name)
 
                 riven_counter[index][1] = 0
 

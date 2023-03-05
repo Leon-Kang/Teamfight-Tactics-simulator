@@ -246,6 +246,8 @@ def hexes_distance_away(target_y, target_x, radius, allow_outside_map=False):
 def distance(champion1, champion2, objects):
     c1_coords = {}
     c2_coords = {}
+    if champion1 is None or champion2 is None:
+        return
 
     if objects:
         c1_coords = to_cube_coords(champion1)
