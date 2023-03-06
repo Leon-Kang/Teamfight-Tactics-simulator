@@ -3,7 +3,6 @@ import multiprocessing as mp
 import os
 import zipfile
 from io import BytesIO
-
 import uvicorn
 from fastapi import FastAPI
 import numpy as np
@@ -95,6 +94,7 @@ def run():
 if __name__ == '__main__':
     # run()
     uvicorn.run(app, host="0.0.0.0", port=8999)
+
 
 @app.put("/run/{test_id}")
 async def run_simulate(model: InputModel):
