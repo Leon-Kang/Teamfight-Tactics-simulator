@@ -131,6 +131,6 @@ async def get_all_battle():
             return directories
 
 
-if __name__ == '__main__':
+#if __name__ == '__main__':
     # run()
-    uvicorn.run(app, host="0.0.0.0", port=8999)
+#    uvicorn.run(app, host="0.0.0.0", port=8999)
