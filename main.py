@@ -91,11 +91,6 @@ def run():
         champion.run(champion.champion, team_data)
 
 
-if __name__ == '__main__':
-    # run()
-    uvicorn.run(app, host="0.0.0.0", port=8999)
-
-
 @app.put("/run/{test_id}")
 async def run_simulate(model: InputModel):
     result = run_model(model)
@@ -134,3 +129,8 @@ async def get_all_battle():
         files = []
         for root, directories, filenames in os.walk(file_path):
             return directories
+
+
+if __name__ == '__main__':
+    # run()
+    uvicorn.run(app, host="0.0.0.0", port=8999)
