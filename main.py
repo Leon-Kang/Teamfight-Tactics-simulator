@@ -11,6 +11,12 @@ from starlette.responses import StreamingResponse
 import champion
 from ModelClass import InputModel
 
+try:
+    mp.set_start_method('spawn')
+except RuntimeError:
+    pass
+
+
 test_json = {'blue': [{'name': 'pyke', 'stars': 1, 'items': [], 'y': 3, 'x': 2},
                       {'name': 'wukong', 'stars': 1, 'items': [], 'y': 3, 'x': 3},
                       {'name': 'lissandra', 'stars': 1, 'items': [], 'y': 1, 'x': 2},

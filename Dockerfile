@@ -1,4 +1,4 @@
-FROM python:3.10
+FROM tiangolo/uvicorn-gunicorn:python3.10
 
 ENV VIRTUAL_ENV=/opt/venv
 
@@ -6,9 +6,11 @@ RUN python3 -m venv $VIRTUAL_ENV
 
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
-WORKDIR /app
+RUN mkdir /teamfight
 
-RUN git clone https://github.com/Leon-Kang/Teamfight-Tactics-simulator.git /app
+WORKDIR /teamfight
+
+RUN git clone https://github.com/Leon-Kang/Teamfight-Tactics-simulator.git /teamfight
 
 RUN  pip install --no-cache-dir --upgrade pip
 
