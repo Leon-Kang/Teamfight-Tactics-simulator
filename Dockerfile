@@ -16,4 +16,4 @@ RUN  pip install --no-cache-dir -r requirements.txt
 
 EXPOSE 8999
 
-CMD ["uvicorn", "main:app", "--proxy-headers", "--host", "0.0.0.0", "--port", "8999"]
+CMD ["uvicorn", "main:app", "--proxy-headers", "--timeout-keep-alive","86400", "--host", "0.0.0.0", "--port", "8999"]
