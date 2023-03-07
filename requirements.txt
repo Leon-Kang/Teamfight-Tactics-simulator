@@ -4,3 +4,4 @@ pandas
 requests
 pydantic
 uvicorn[standard]
+starlette

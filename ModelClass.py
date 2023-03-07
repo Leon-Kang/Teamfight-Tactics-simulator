@@ -23,8 +23,8 @@ class Lineup(BaseModel):
 
 
 class InputModel(BaseModel):
-    test_id: int
-    batch_battle_id: int
+    test_id: str
+    batch_battle_id: str
     blue_lineups_num: int
     red_lineups_num: int
     blue_teams: List[Lineup]

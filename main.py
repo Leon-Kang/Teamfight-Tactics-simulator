@@ -130,7 +130,7 @@ async def get_all_battle():
         for root, directories, filenames in os.walk(file_path):
             return directories
 
-
+# run through docker CMD
 #if __name__ == '__main__':
     # run()
 #    uvicorn.run(app, host="0.0.0.0", port=8999)
