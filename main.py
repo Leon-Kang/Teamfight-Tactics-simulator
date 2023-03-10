@@ -155,7 +155,7 @@ def background_run_model(model):
 async def run_task(model: InputModel,
                    background_tasks: BackgroundTasks):
     batch_battle_id = model.batch_battle_id
-    background_tasks.add_task(background_run_model(model))
+    background_tasks.add_task(background_run_model, model)
     return {"message": f'RECEIVED - Battle id: {batch_battle_id}'}
 
 
