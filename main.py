@@ -1,4 +1,5 @@
 import datetime
+import json
 import multiprocessing as mp
 import os
 import zipfile
@@ -132,9 +133,31 @@ async def get_all_battle():
     file_path = os.path.join(cwd, output)
 
     if os.path.exists(file_path):
-        files = []
         for root, directories, filenames in os.walk(file_path):
             return directories
+
+
+@app.put("/start/task")
+async def run_task(model: InputModel):
+    result = run_model(model)
+    file = model.batch_battle_id
+    data = json.dumps(result)
+    save('response', file, data)
+    return f'FINISHED - Battle id: {file}'
+
+
+@app.get("/get/response/{battle_id}")
+async def get_battle(battle_id: str):
+    file_path = os.path.join(cwd, output, 'response', battle_id + '.json')
+    result = None
+    if os.path.exists(file_path):
+        with open(file_path, 'r') as file:
+            result = json.load(file)
+            file.close()
+        return result
+    return 'No Data'
+
+
 
 # run through docker CMD
 #if __name__ == '__main__':
