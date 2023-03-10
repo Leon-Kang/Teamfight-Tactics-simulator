@@ -5,7 +5,7 @@ import os
 import zipfile
 from io import BytesIO
 import uvicorn
-from fastapi import FastAPI
+from fastapi import FastAPI, BackgroundTasks, Depends
 import numpy as np
 from starlette.responses import StreamingResponse
 
@@ -16,7 +16,6 @@ try:
     mp.set_start_method('spawn')
 except RuntimeError:
     pass
-
 
 test_json = {'blue': [{'name': 'pyke', 'stars': 1, 'items': [], 'y': 3, 'x': 2},
                       {'name': 'wukong', 'stars': 1, 'items': [], 'y': 3, 'x': 3},
@@ -137,13 +136,27 @@ async def get_all_battle():
             return directories
 
 
-@app.put("/start/task")
-async def run_task(model: InputModel):
+# @app.put("/start/task")
+# async def run_task(model: InputModel):
+#     result = run_model(model)
+#     file = model.batch_battle_id
+#     data = json.dumps(result)
+#     save('response', file, data)
+#     return f'FINISHED - Battle id: {file}'
+
+def background_run_model(model):
     result = run_model(model)
     file = model.batch_battle_id
     data = json.dumps(result)
     save('response', file, data)
-    return f'FINISHED - Battle id: {file}'
+
+
+@app.put("/start/task")
+async def run_task(model: InputModel,
+                   background_tasks: BackgroundTasks):
+    batch_battle_id = model.batch_battle_id
+    background_tasks.add_task(background_run_model)
+    return {"message": f'RECEIVED - Battle id: {batch_battle_id}'}
 
 
 @app.get("/get/response/{battle_id}")
@@ -156,10 +169,3 @@ async def get_battle(battle_id: str):
             file.close()
         return result
     return 'No Data'
-
-
-
-# run through docker CMD
-#if __name__ == '__main__':
-    # run()
-#    uvicorn.run(app, host="0.0.0.0", port=8999)
